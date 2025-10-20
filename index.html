@@ -16,62 +16,110 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
             outline: none;
         }
-        .letter-card {
-            transition: all 0.3s ease;
+        .letter-card { transition: all 0.3s ease; }
+        .letter-card:hover { transform: translateY(-5px); }
+        /* Estilo para sílaba inicial destacada */
+        .highlight-syllable { color: #dc2626 !important; font-weight: 900; text-shadow: 0 2px 4px rgba(220, 38, 38, 0.3); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .syllable-card { transition: all 0.3s ease; cursor: pointer; }
+        .syllable-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .ranking-item { transition: all 0.3s ease; }
+        .ranking-item:hover { transform: translateX(5px); background-color: #fef3c7; }
+        .speaker-icon { transition: all 0.3s ease; }
+        .syllable-card:hover .speaker-icon { transform: scale(1.2); color: #4f46e5; }
+        .playing { animation: bounce 0.5s ease infinite; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .word-example { cursor: pointer; transition: all 0.3s ease; }
+        .word-example:hover { background-color: #c7d2fe !important; transform: scale(1.05); }
+        .word-example.playing { background-color: #a5b4fc !important; border-color: #4f46e5 !important; }
+        /* Drag & Drop Styles */
+        .puzzle-letter { transition: all 0.3s ease; cursor: grab; user-select: none; touch-action: none; }
+        .puzzle-letter:active { cursor: grabbing; transform: scale(1.1); z-index: 10; }
+        .puzzle-slot { transition: all 0.3s ease; min-height: 70px; }
+        .puzzle-slot.highlight { background-color: #dbeafe; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); }
+        .puzzle-slot.correct { background-color: #dcfce7; border-color: #16a34a; }
+        .puzzle-letter.correct { background-color: #bbf7d0 !important; border-color: #16a34a !important; cursor: default; }
+        .puzzle-letter.placed { cursor: default; }
+        .puzzle-hint { transition: all 0.3s ease; cursor: pointer; }
+        .puzzle-hint:hover { transform: scale(1.1); background-color: #fef3c7; }
+        .shake { animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .syllable-slot.correct { background-color: #dcfce7; border-color: #16a34a; }
+
+        /* --- ESTILOS PARA JOGO DA MEMÓRIA --- */
+        #memory-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+            gap: 16px;
+            justify-content: center;
         }
-        .letter-card:hover {
-            transform: translateY(-5px);
+        .memory-card {
+            perspective: 1000px;
+            height: 120px;
+            width: 100%;
         }
-        .highlight-syllable {
-            color: #dc2626 !important;
-            font-weight: 900;
-            text-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
-            animation: pulse 2s infinite;
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .memory-card.flipped .card-inner {
+            transform: rotateY(180deg);
         }
-        .syllable-card {
-            transition: all 0.3s ease;
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 3px solid;
         }
-        .syllable-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        .card-back {
+            background-color: #06b6d4; /* Teal */
+            color: white;
+            transform: rotateY(0deg);
+            border-color: #0e7490;
+            font-size: 40px;
         }
-        .ranking-item {
-            transition: all 0.3s ease;
+        .card-front {
+            background-color: #f0fdfa; /* Teal-50 */
+            color: #1f2937;
+            transform: rotateY(180deg);
+            border-color: #99f6e4;
+            font-size: 32px;
+            padding: 8px;
+            flex-direction: column; 
+            line-height: 1.2;
         }
-        .ranking-item:hover {
-            transform: translateX(5px);
-            background-color: #fef3c7;
+        .memory-card.matched .card-front {
+            background-color: #ccfbf1; /* Teal-200 */
+            border-color: #14b8a6; /* Teal-500 */
+            cursor: default;
         }
-        .speaker-icon {
-            transition: all 0.3s ease;
-        }
-        .syllable-card:hover .speaker-icon {
-            transform: scale(1.2);
-            color: #4f46e5;
-        }
-        .playing {
-            animation: bounce 0.5s ease infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        .word-example {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .word-example:hover {
-            background-color: #c7d2fe !important;
-            transform: scale(1.05);
-        }
-        .word-example.playing {
-            background-color: #a5b4fc !important;
-            border-color: #4f46e5 !important;
+        @media (max-width: 640px) {
+            #memory-board {
+                grid-template-columns: repeat(3, 1fr); /* 3 cards per row on small screens */
+                gap: 10px;
+            }
+            .memory-card {
+                height: 100px;
+            }
+            .card-back {
+                font-size: 30px;
+            }
+            .card-front {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -107,129 +155,196 @@
             { letter: 'X', word: 'XÍCARA', emoji: '☕', syllables: ['XÍ', 'CA', 'RA'] },
             { letter: 'Z', word: 'ZEBRA', emoji: '🦓', syllables: ['ZE', 'BRA'] },
         ];
-
         // Dados completos de todas as sílabas organizadas por consoante
         const ALL_SYLLABLES_DATA = [
             // Consoante B
-            { syllable: 'BA', words: ['BALA', 'BANANA', 'BATATA'], emoji: '🍌' },
-            { syllable: 'BE', words: ['BEBÊ', 'BEXIGA', 'BENÇÃO'], emoji: '👶' },
-            { syllable: 'BI', words: ['BICICLETA', 'BISCOITO', 'BICHO'], emoji: '🚲' },
-            { syllable: 'BO', words: ['BOLA', 'BONECA', 'BOCA'], emoji: '⚽' },
-            { syllable: 'BU', words: ['BURACO', 'BÚSSOLA', 'BÚFALO'], emoji: '🕳️' },
+            { syllable: 'Ba', words: ['BALA', 'BANANA', 'BATATA'], emoji: '🍌' },
+            { syllable: 'Be', words: ['BEBÊ', 'BEXIGA', 'BENÇÃO'], emoji: '👶' },
+            { syllable: 'Bi', words: ['BICICLETA', 'BISCOITO', 'BICHO'], emoji: '🚲' },
+            { syllable: 'Bo', words: ['BOLA', 'BONECA', 'BOCA'], emoji: '⚽' },
+            { syllable: 'Bu', words: ['BURACO', 'BÚSSOLA', 'BÚFALO'], emoji: '🕳️' },
             
             // Consoante C
-            { syllable: 'CA', words: ['CASA', 'CACHORRO', 'CAMA'], emoji: '🏠' },
-            { syllable: 'CE', words: ['CÉU', 'CEREJA', 'CENOURA'], emoji: '🍒' },
-            { syllable: 'CI', words: ['CINCO', 'CIRCO', 'CIGARRA'], emoji: '🎪' },
-            { syllable: 'CO', words: ['COELHO', 'CORDA', 'COPO'], emoji: '🐇' },
-            { syllable: 'CU', words: ['CUBO', 'CUPIM', 'CUSCUZ'], emoji: '🎲' },
+            { syllable: 'Ca', words: ['CASA', 'CACHORRO', 'CAMA'], emoji: '🏠' },
+            { syllable: 'Ce', words: ['CÉU', 'CEREJA', 'CENOURA'], emoji: '🍒' },
+            { syllable: 'Ci', words: ['CINCO', 'CIRCO', 'CIGARRA'], emoji: '🎪' },
+            { syllable: 'Co', words: ['COELHO', 'CORDA', 'COPO'], emoji: '🐇' },
+            { syllable: 'Cu', words: ['CUBO', 'CUPIM', 'CUSCUZ'], emoji: '🎲' },
             
             // Consoante D
-            { syllable: 'DA', words: ['DADO', 'DANÇA', 'DAMA'], emoji: '🎲' },
-            { syllable: 'DE', words: ['DENTE', 'DEDO', 'DEUS'], emoji: '🦷' },
-            { syllable: 'DI', words: ['DINOSSAURO', 'DIA', 'DINHEIRO'], emoji: '🦖' },
-            { syllable: 'DO', words: ['DONZELA', 'DOR', 'DOCE'], emoji: '🍬' },
-            { syllable: 'DU', words: ['DUCHA', 'DUENDE', 'DUNAS'], emoji: '🧝' },
+            { syllable: 'Da', words: ['DADO', 'DANÇA', 'DAMA'], emoji: '🎲' },
+            { syllable: 'De', words: ['DENTE', 'DEDO', 'DEUS'], emoji: '🦷' },
+            { syllable: 'Di', words: ['DINOSSAURO', 'DIA', 'DINHEIRO'], emoji: '🦖' },
+            { syllable: 'Do', words: ['DONZELA', 'DOR', 'DOCE'], emoji: '🍬' },
+            { syllable: 'Du', words: ['DUCHA', 'DUENDE', 'DUNAS'], emoji: '🧝' },
             
             // Consoante F
-            { syllable: 'FA', words: ['FADA', 'FACA', 'FAROL'], emoji: '🧚' },
-            { syllable: 'FE', words: ['FESTA', 'FELIZ', 'FERRAMENTA'], emoji: '🎉' },
-            { syllable: 'FI', words: ['FILHO', 'FITA', 'FIM'], emoji: '👦' },
-            { syllable: 'FO', words: ['FOGO', 'FOCA', 'FOLHA'], emoji: '🔥' },
-            { syllable: 'FU', words: ['FURACÃO', 'FUTURO', 'FUTEBOL'], emoji: '🌪' },
+            { syllable: 'Fa', words: ['FADA', 'FACA', 'FAROL'], emoji: '🧚' },
+            { syllable: 'Fe', words: ['FESTA', 'FELIZ', 'FERRAMENTA'], emoji: '🎉' },
+            { syllable: 'Fi', words: ['FILHO', 'FITA', 'FIM'], emoji: '👦' },
+            { syllable: 'Fo', words: ['FOGO', 'FOCA', 'FOLHA'], emoji: '🔥' },
+            { syllable: 'Fu', words: ['FURACÃO', 'FUTURO', 'FUTEBOL'], emoji: '🌪' },
             
             // Consoante G
-            { syllable: 'GA', words: ['GATO', 'GALINHA', 'GARFO'], emoji: '🐈' },
-            { syllable: 'GE', words: ['GELO', 'GELADEIRA', 'GEMA'], emoji: '🧊' },
-            { syllable: 'GI', words: ['GIRAFA', 'GIGANTE', 'GINÁSIO'], emoji: '🦒' },
-            { syllable: 'GO', words: ['GOLFINHO', 'GOTA', 'GOL'], emoji: '🐬' },
-            { syllable: 'GU', words: ['GULOSO', 'GUITARRA', 'GUARDA'], emoji: '🎸' },
+            { syllable: 'Ga', words: ['GATO', 'GALINHA', 'GARFO'], emoji: '🐈' },
+            { syllable: 'Ge', words: ['GELO', 'GELADEIRA', 'GEMA'], emoji: '🧊' },
+            { syllable: 'Gi', words: ['GIRAFA', 'GIGANTE', 'GINÁSIO'], emoji: '🦒' },
+            { syllable: 'Go', words: ['GOLFINHO', 'GOTA', 'GOL'], emoji: '🐬' },
+            { syllable: 'Gu', words: ['GUITARRA', 'GUERRA', 'GUARDA'], emoji: '🎸' },
+
+	        // Consoante H
+            { syllable: 'Ha', words: ['HARMONIA', 'HABILIDADE', 'HARPA'], emoji: '🎼' },
+            { syllable: 'He', words: ['HERÓI', 'HERDEIRO', 'HELICOPTERO'], emoji: '🚁' },
+            { syllable: 'Hi', words: ['HISTÓRIA', 'HIGIENE', 'HINO'], emoji: '🗿' },
+            { syllable: 'Ho', words: ['HONRA', 'HOMENAGEM', 'HOMEM'], emoji: '👨‍🦰' },
+            { syllable: 'Hu', words: ['HUMILDADE', 'HUMANO', 'HUMOR'], emoji: '🚹' },
+
             
             // Consoante J
-            { syllable: 'JA', words: ['JANELA', 'JACARÉ', 'JARDIM'], emoji: '🖼️' },
-            { syllable: 'JE', words: ['JESUS', 'JEGUE', 'JEITO'], emoji: '🙏' },
-            { syllable: 'JI', words: ['JIPE', 'JILÓ', 'JIBOIA'], emoji: '🚙' },
-            { syllable: 'JO', words: ['JOELHO', 'JOGO', 'JORNAL'], emoji: '🦵' },
-            { syllable: 'JU', words: ['JUSTIÇA', 'JÚRI', 'JUJUBA'], emoji: '⚖️' },
+            { syllable: 'Ja', words: ['JANELA', 'JACARÉ', 'JARDIM'], emoji: '🖼️' },
+            { syllable: 'Je', words: ['JESUS', 'JEGUE', 'JEITO'], emoji: '🙏' },
+            { syllable: 'Ji', words: ['JIPE', 'JILÓ', 'JIBOIA'], emoji: '🚙' },
+            { syllable: 'Jo', words: ['JOELHO', 'JOGO', 'JORNAL'], emoji: '🦵' },
+            { syllable: 'Ju', words: ['JUSTIÇA', 'JÚRI', 'JUJUBA'], emoji: '⚖️' },
             
             // Consoante L
-            { syllable: 'LA', words: ['LÁPIS', 'LAGO', 'LARANJA'], emoji: '✏️' },
-            { syllable: 'LE', words: ['LEÃO', 'LEITE', 'LENÇO'], emoji: '🦁' },
-            { syllable: 'LI', words: ['LIVRO', 'LIMÃO', 'LINHA'], emoji: '📖' },
-            { syllable: 'LO', words: ['LOBO', 'LOUÇA', 'LONGE'], emoji: '🐺' },
-            { syllable: 'LU', words: ['LUA', 'LUZ', 'LUGAR'], emoji: '🌙' },
+            { syllable: 'La', words: ['LÁPIS', 'LAGO', 'LARANJA'], emoji: '✏️' },
+            { syllable: 'Le', words: ['LEÃO', 'LEITE', 'LENÇO'], emoji: '🦁' },
+            { syllable: 'Li', words: ['LIVRO', 'LIMÃO', 'LINHA'], emoji: '📖' },
+            { syllable: 'Lo', words: ['LOBO', 'LOUÇA', 'LONGE'], emoji: '🐺' },
+            { syllable: 'Lu', words: ['LUA', 'LUZ', 'LUGAR'], emoji: '🌙' },
             
             // Consoante M
-            { syllable: 'MA', words: ['MACACO', 'MÃO', 'MALA'], emoji: '🐒' },
-            { syllable: 'ME', words: ['MESA', 'MEDO', 'MENINO'], emoji: '🪑' },
-            { syllable: 'MI', words: ['MILHO', 'MINHOCA', 'MICO'], emoji: '🌽' },
-            { syllable: 'MO', words: ['MORANGO', 'MOEDA', 'MOLA'], emoji: '🍓' },
-            { syllable: 'MU', words: ['MULHER', 'MUNDO', 'MURO'], emoji: '👩' },
+            { syllable: 'Ma', words: ['MACACO', 'MÃO', 'MALA'], emoji: '🐒' },
+            { syllable: 'Me', words: ['MESA', 'MEDO', 'MENINO'], emoji: '🪑' },
+            { syllable: 'Mi', words: ['MILHO', 'MINHOCA', 'MICO'], emoji: '🌽' },
+            { syllable: 'Mo', words: ['MORANGO', 'MOEDA', 'MOLA'], emoji: '🍓' },
+            { syllable: 'Mu', words: ['MULHER', 'MUNDO', 'MURO'], emoji: '👩' },
             
             // Consoante N
-            { syllable: 'NA', words: ['NAVIO', 'NARIZ', 'NADA'], emoji: '🚢' },
-            { syllable: 'NE', words: ['NEGRO', 'NÉVOA', 'NERVO'], emoji: '🌫️' },
-            { syllable: 'NI', words: ['NINHO', 'NINAR', 'NINHO'], emoji: '🐣' },
-            { syllable: 'NO', words: ['NOME', 'NOITE', 'NÓ'], emoji: '🌙' },
-            { syllable: 'NU', words: ['NUVEM', 'NÚMERO', 'NUBLADO'], emoji: '☁️' },
+            { syllable: 'Na', words: ['NAVIO', 'NARIZ', 'NADA'], emoji: '🚢' },
+            { syllable: 'Ne', words: ['NEGRO', 'NÉVOA', 'NERVO'], emoji: '🌫️' },
+            { syllable: 'Ni', words: ['NINHO', 'NÍQUEL', 'NINHO'], emoji: '🐣' },
+            { syllable: 'No', words: ['NOME', 'NOITE', 'NÓ'], emoji: '🌙' },
+            { syllable: 'Nu', words: ['NUVEM', 'NÚMERO', 'NUBLADO'], emoji: '☁️' },
             
             // Consoante P
-            { syllable: 'PA', words: ['PATO', 'PÃO', 'PALHAÇO'], emoji: '🦆' },
-            { syllable: 'PE', words: ['PEIXE', 'PEDRA', 'PENA'], emoji: '🐟' },
-            { syllable: 'PI', words: ['PIPA', 'PIRÂMIDE', 'PICOLÉ'], emoji: '🪁' },
-            { syllable: 'PO', words: ['PORTA', 'POTE', 'POMBA'], emoji: '🚪' },
-            { syllable: 'PU', words: ['PULGA', 'PULO', 'PULSO'], emoji: '🦗' },
+            { syllable: 'Pa', words: ['PATO', 'PÃO', 'PALHAÇO'], emoji: '🦆' },
+            { syllable: 'Pe', words: ['PEIXE', 'PEDRA', 'PENA'], emoji: '🐟' },
+            { syllable: 'Pi', words: ['PIPA', 'PIRÂMIDE', 'PICOLÉ'], emoji: '🪁' },
+            { syllable: 'Po', words: ['PORTA', 'POTE', 'POMBA'], emoji: '🚪' },
+            { syllable: 'Pu', words: ['PULGA', 'PULO', 'PULSO'], emoji: '🦗' },
+
+           // Consoante Q (3 itens) - Com placeholders para a próxima página
+            { syllable: 'Qua', words: ['QUANDO', 'QUALIDADE', 'QUANTIDADE'], emoji: '➕' },
+            { syllable: 'Que', words: ['QUESTÃO', 'QUERIDO', 'QUENTE'], emoji: '🤒' },
+            { syllable: 'Qui', words: ['QUISER', 'QUIETO', 'QUINTAL'], emoji: '🙇‍♂️' },
+            { placeholder: true, syllable: '', words: [], emoji: '' },
+            { placeholder: true, syllable: '', words: [], emoji: '' },
+
             
             // Consoante R
-            { syllable: 'RA', words: ['RATO', 'RABO', 'RADIO'], emoji: '🐭' },
-            { syllable: 'RE', words: ['REI', 'RELOGIO', 'REDE'], emoji: '👑' },
-            { syllable: 'RI', words: ['RIO', 'RISO', 'RICO'], emoji: '🌊' },
-            { syllable: 'RO', words: ['ROSA', 'RODA', 'ROUPA'], emoji: '🌹' },
-            { syllable: 'RU', words: ['RUA', 'RUÍDO', 'RUGIDO'], emoji: '🛣️' },
+            { syllable: 'Ra', words: ['RATO', 'RABO', 'RADIO'], emoji: '🐭' },
+            { syllable: 'Re', words: ['REI', 'RELOGIO', 'REDE'], emoji: '👑' },
+            { syllable: 'Ri', words: ['RIO', 'RISO', 'RICO'], emoji: '🌊' },
+            { syllable: 'Ro', words: ['ROSA', 'RODA', 'ROUPA'], emoji: '🌹' },
+            { syllable: 'Ru', words: ['RUA', 'RUÍDO', 'RUGIDO'], emoji: '🛣️' },
             
             // Consoante S
-            { syllable: 'SA', words: ['SAPO', 'SAL', 'SACO'], emoji: '🐸' },
-            { syllable: 'SE', words: ['SETE', 'SERRA', 'SELO'], emoji: '7️⃣' },
-            { syllable: 'SI', words: ['SINO', 'SIRI', 'SILÊNCIO'], emoji: '🔔' },
-            { syllable: 'SO', words: ['SOL', 'SOMBRA', 'SORRISO'], emoji: '☀️' },
-            { syllable: 'SU', words: ['SUCO', 'SURDO', 'SUOR'], emoji: '🧃' },
+            { syllable: 'Sa', words: ['SAPO', 'SAL', 'SACO'], emoji: '🐸' },
+            { syllable: 'Se', words: ['SETE', 'SERRA', 'SELO'], emoji: '7️⃣' },
+            { syllable: 'Si', words: ['SINO', 'SIRI', 'SILÊNCIO'], emoji: '🔔' },
+            { syllable: 'So', words: ['SOL', 'SOMBRA', 'SORRISO'], emoji: '☀️' },
+            { syllable: 'Su', words: ['SUCO', 'SURDO', 'SUOR'], emoji: '🧃' },
             
             // Consoante T
-            { syllable: 'TA', words: ['TATU', 'TANQUE', 'TAMANHO'], emoji: '🦔' },
-            { syllable: 'TE', words: ['TESOURA', 'TERRA', 'TELA'], emoji: '✂️' },
-            { syllable: 'TI', words: ['TIGRE', 'TINTA', 'TIO'], emoji: '🐯' },
-            { syllable: 'TO', words: ['TOMATE', 'TOURO', 'TOALHA'], emoji: '🍅' },
-            { syllable: 'TU', words: ['TUCANO', 'TUBARÃO', 'TÚNEL'], emoji: '🦜' },
+            { syllable: 'Ta', words: ['TATU', 'TANQUE', 'TAMANHO'], emoji: '🦔' },
+            { syllable: 'Te', words: ['TESOURA', 'TERRA', 'TELA'], emoji: '✂️' },
+            { syllable: 'Ti', words: ['TIGRE', 'TINTA', 'TIO'], emoji: '🐯' },
+            { syllable: 'To', words: ['TOMATE', 'TOURO', 'TOALHA'], emoji: '🍅' },
+            { syllable: 'Tu', words: ['TUCANO', 'TUBARÃO', 'TÚNEL'], emoji: '🦜' },
             
             // Consoante V
-            { syllable: 'VA', words: ['VACA', 'VASSOURA', 'VASO'], emoji: '🐄' },
-            { syllable: 'VE', words: ['VELA', 'VENTO', 'VERÃO'], emoji: '🕯️' },
-            { syllable: 'VI', words: ['VIOLÃO', 'VIDA', 'VILA'], emoji: '🎸' },
-            { syllable: 'VO', words: ['VOVÓ', 'VOLTA', 'VOO'], emoji: '👵' },
-            { syllable: 'VU', words: ['VULCÃO', 'VULTO', 'VULGO'], emoji: '🌋' },
+            { syllable: 'Va', words: ['VACA', 'VASSOURA', 'VASO'], emoji: '🐄' },
+            { syllable: 'Ve', words: ['VELA', 'VENTO', 'VERÃO'], emoji: '🕯️' },
+            { syllable: 'Vi', words: ['VIOLÃO', 'VIDA', 'VILA'], emoji: '🎸' },
+            { syllable: 'Vo', words: ['VOVÓ', 'VOLTA', 'VOO'], emoji: '👵' },
+            { syllable: 'Vu', words: ['VULCÃO', 'VULTO', 'VULGO'], emoji: '🌋' },
             
             // Consoante X
-            { syllable: 'XA', words: ['XADREZ', 'XALE', 'XAROPE'], emoji: '♟️' },
-            { syllable: 'XE', words: ['XEQUE', 'XERIFE', 'XENOFOBIA'], emoji: '👮' },
-            { syllable: 'XI', words: ['XÍCARA', 'XINGAMENTO', 'XISTO'], emoji: '☕' },
-            { syllable: 'XO', words: ['XOXO', 'XODÓ', 'XOTE'], emoji: '💕' },
-            { syllable: 'XU', words: ['XUXU', 'XURUPITA', 'XUCA'], emoji: '🍈' },
+            { syllable: 'Xa', words: ['XADREZ', 'XALE', 'XAROPE'], emoji: '♟️' },
+            { syllable: 'Xe', words: ['XEQUE', 'XERIFE', 'XENOFOBIA'], emoji: '👮' },
+            { syllable: 'Xi', words: ['XÍCARA', 'XILOFONE', 'XISTO'], emoji: '☕' },
+            { syllable: 'Xo', words: ['XOXO', 'XODÓ', 'XOTE'], emoji: '💕' },
+            { syllable: 'Xu', words: ['XUXU', 'XURUPITA', 'XUCA'], emoji: '🍈' },
             
             // Consoante Z
-            { syllable: 'ZA', words: ['ZEBRA', 'ZANGÃO', 'ZARPAR'], emoji: '🦓' },
-            { syllable: 'ZE', words: ['ZELO', 'ZERO', 'ZEN'], emoji: '0️⃣' },
-            { syllable: 'ZI', words: ['ZIGUEZAGUE', 'ZINCO', 'ZÍPER'], emoji: '〰️' },
-            { syllable: 'ZO', words: ['ZOOLÓGICO', 'ZOMBAR', 'ZONA'], emoji: '🐘' },
-            { syllable: 'ZU', words: ['ZUMBIDO', 'ZUNIR', 'ZUNZUM'], emoji: '🐝' }
+            { syllable: 'Za', words: ['ZEBRA', 'ZANGÃO', 'ZARPAR'], emoji: '🦓' },
+            { syllable: 'Ze', words: ['ZELO', 'ZERO', 'ZEN'], emoji: '0️⃣' },
+            { syllable: 'Zi', words: ['ZIGUEZAGUE', 'ZINCO', 'ZÍPER'], emoji: '〰️' },
+            { syllable: 'Zo', words: ['ZOOLÓGICO', 'ZOMBAR', 'ZONA'], emoji: '🐘' },
+            { syllable: 'Zu', words: ['ZUMBIDO', 'ZUNIR', 'ZUNZUM'], emoji: '🐝' }
+        ];
+        
+        // --- MÓDULO: JOGO DA MEMÓRIA (Palavra + Sílaba Inicial) ---
+        const MEMORY_GAME_DATA_PAIRS = [
+            // Pares Palavra e Sílaba
+            { word: 'BOLA', syllable: 'BO', emoji: '⚽' },
+            { word: 'CASA', syllable: 'CA', emoji: '🏠' },
+            { word: 'DADO', syllable: 'DA', emoji: '🎲' },
+            { word: 'GATO', syllable: 'GA', emoji: '🐈' },
+            { word: 'PATO', syllable: 'PA', emoji: '🦆' },
+            { word: 'SAPO', syllable: 'SA', emoji: '🐸' },
+            { word: 'FOCA', syllable: 'FO', emoji: '🦭' },
+            { word: 'LUA', syllable: 'LU', emoji: '🌙' },
         ];
 
-        // --- SISTEMA DE ÁUDIO ---
+        // --- MÓDULO: QUEBRA-CABEÇA DE PALAVRAS (Letras Drag & Drop) ---
+        const WORD_PUZZLES_DATA = [
+            { word: 'GATO', emoji: '🐱', hint: 'Animal que mia' },
+            { word: 'CASA', emoji: '🏠', hint: 'Lugar onde moramos' },
+            { word: 'BOLA', emoji: '⚽', hint: 'Objeto redondo para brincar' },
+            { word: 'SAPO', emoji: '🐸', hint: 'Animal que salta e faz "ribbit"' },
+            { word: 'FLOR', emoji: '🌺', hint: 'Planta colorida e perfumada' },
+        ];
+
+        // --- MÓDULO: FORMAÇÃO DE PALAVRAS (Sílabas Click) ---
+        const WORD_PUZZLES = [
+            { word: 'GATO', segments: ['GA', 'TO'], type: 'SÍLABA' },
+            { word: 'BOLA', segments: ['BO', 'LA'], type: 'SÍLABA' },
+            { word: 'SAPO', segments: ['SA', 'PO'], type: 'SÍLABA' },
+            { word: 'FOCA', segments: ['FO', 'CA'], type: 'SÍLABA' },
+            { word: 'DADO', segments: ['DA', 'DO'], type: 'SÍLABA' },
+        ];
+
+        // --- MÓDULO: CONTAGEM ---
+        const COUNTING_PUZZLES = [
+            { objects: '🍎', count: 3 },
+            { objects: '⭐', count: 5 },
+            { objects: '🎈', count: 8 },
+            { objects: '🦆', count: 4 },
+            { objects: '🚀', count: 6 },
+        ];
+
+        // --- MÓDULO: ACHE A SÍLABA INICIAL ---
+        const INITIAL_SYLLABLE_PUZZLES = [
+            { word: 'FOGUETE', correctSyllable: 'FO', options: ['GU', 'FO', 'TE', 'BO'] },
+            { word: 'CORUJA', correctSyllable: 'CO', options: ['RU', 'JA', 'CA', 'CO'] },
+            { word: 'TELEFONE', correctSyllable: 'TE', options: ['FO', 'NE', 'TE', 'DA'] },
+            { word: 'NAVIO', correctSyllable: 'NA', options: ['BO', 'VI', 'NA', 'NO'] },
+        ];
+
+        // --- SISTEMA DE ÁUDIO CORRIGIDO ---
         class SyllableAudio {
             constructor() {
                 this.audioContext = null;
                 this.isPlaying = false;
                 this.currentUtterance = null;
                 this.init();
+                // Garante que as vozes sejam carregadas no início
+                window.speechSynthesis.onvoiceschanged = () => {
+                    // console.log("Vozes carregadas.");
+                };
             }
 
             init() {
@@ -239,27 +354,37 @@
                     console.warn('Web Audio API não suportada:', error);
                 }
             }
+            
+            // Novo método CORRIGIDO para o Alfabeto: Fala a letra e depois a palavra
+            speakLetterAndWord(letter, word) {
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
+                    // Primeiro, fala a letra
+                    this.speakText(letter, () => {
+                        // Após a letra, espera um pouco e fala a palavra
+                        setTimeout(() => {
+                            this.speakText(word);
+                        }, 500); 
+                    }, letter);
+                } else {
+                    // Fallback fala a letra e depois a palavra (apenas um som simulado)
+                    this.fallbackSound(letter + ' ' + word);
+                }
+            }
 
-            // Reproduz a sílaba e depois os exemplos
+            // Funções de fala que usam síntese de voz nativa
             speakSyllableWithExamples(syllableData) {
                 if ('speechSynthesis' in window) {
-                    // Para a fala anterior se estiver executando
                     speechSynthesis.cancel();
-                    
                     const { syllable, words } = syllableData;
-                    
-                    // Primeiro fala a sílaba
                     this.speakText(syllable, () => {
-                        // Depois fala cada palavra exemplo com pausa
                         this.speakExamples(words);
                     });
-                    
                 } else {
                     this.fallbackSound(syllableData.syllable);
                 }
             }
 
-            // Reproduz apenas a sílaba
             speakSyllable(syllable) {
                 if ('speechSynthesis' in window) {
                     speechSynthesis.cancel();
@@ -269,7 +394,6 @@
                 }
             }
 
-            // Reproduz uma palavra exemplo
             speakWordExample(word) {
                 if ('speechSynthesis' in window) {
                     speechSynthesis.cancel();
@@ -279,22 +403,17 @@
                 }
             }
 
-            // Função auxiliar para falar texto
             speakText(text, onEnd = null) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                
-                // Configurações para português brasileiro
                 utterance.lang = 'pt-BR';
-                utterance.rate = 0.7; // Velocidade mais lenta para crianças
+                utterance.rate = 0.7;
                 utterance.pitch = 1.0;
                 utterance.volume = 1.0;
                 
-                // Tenta encontrar uma voz em português
                 const voices = speechSynthesis.getVoices();
                 const portugueseVoice = voices.find(voice => 
                     voice.lang.includes('pt') || voice.lang.includes('PT')
                 );
-                
                 if (portugueseVoice) {
                     utterance.voice = portugueseVoice;
                 }
@@ -321,32 +440,28 @@
                 speechSynthesis.speak(utterance);
             }
 
-            // Reproduz os exemplos com pausa entre eles
             speakExamples(words) {
                 let index = 0;
-                
                 const speakNext = () => {
                     if (index < words.length) {
                         setTimeout(() => {
                             this.speakText(words[index], speakNext);
                             index++;
-                        }, 800); // Pausa de 800ms entre as palavras
+                        }, 800);
                     }
                 };
-                
                 speakNext();
             }
 
-            // Som de fallback usando Web Audio API
+            // Fallback para dispositivos sem síntese de voz
             fallbackSound(text) {
                 if (!this.audioContext) return;
-                
                 try {
                     const oscillator = this.audioContext.createOscillator();
                     const gainNode = this.audioContext.createGain();
                     
-                    // Frequências diferentes baseadas no texto
-                    const baseFreq = this.calculateFrequency(text);
+                    const charSum = text.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+                    const baseFreq = 300 + (charSum % 300);
                     
                     oscillator.type = 'sine';
                     oscillator.frequency.setValueAtTime(baseFreq, this.audioContext.currentTime);
@@ -361,7 +476,6 @@
                     
                     oscillator.start();
                     oscillator.stop(this.audioContext.currentTime + 0.5);
-                    
                     oscillator.onended = () => {
                         this.highlightPlayingText(text, false);
                     };
@@ -371,18 +485,10 @@
                 }
             }
 
-            // Calcula frequência baseada no texto
-            calculateFrequency(text) {
-                const charSum = text.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-                return 300 + (charSum % 300); // Frequência entre 300-600Hz
-            }
-
             highlightPlayingText(text, isPlaying) {
-                // Remove highlight anterior
                 const previousPlaying = document.querySelectorAll('.playing');
                 previousPlaying.forEach(el => el.classList.remove('playing'));
                 
-                // Aplica highlight ao elemento atual
                 const elements = document.querySelectorAll(`[data-text="${text}"]`);
                 elements.forEach(element => {
                     if (isPlaying) {
@@ -400,74 +506,41 @@
                     speechSynthesis.cancel();
                 }
                 this.isPlaying = false;
-                
-                // Remove todos os highlights
                 const playingElements = document.querySelectorAll('.playing');
                 playingElements.forEach(el => el.classList.remove('playing'));
             }
         }
 
-        // Inicializa o sistema de áudio
         const syllableAudio = new SyllableAudio();
+        function playSyllableWithExamples(syllableData) { syllableAudio.speakSyllableWithExamples(syllableData); }
+        function playSyllableSound(syllable) { syllableAudio.speakSyllable(syllable); }
+        function playWordExample(word) { syllableAudio.speakWordExample(word); }
+        // FUNÇÃO GLOBAL CORRIGIDA PARA O ALFABETO
+        function playLetterAndWord(letter, word) { syllableAudio.speakLetterAndWord(letter, word); }
 
-        // Funções para reproduzir sons
-        function playSyllableWithExamples(syllableData) {
-            syllableAudio.speakSyllableWithExamples(syllableData);
-        }
-
-        function playSyllableSound(syllable) {
-            syllableAudio.speakSyllable(syllable);
-        }
-
-        function playWordExample(word) {
-            syllableAudio.speakWordExample(word);
-        }
-
-        const WORD_PUZZLES = [
-            { word: 'GATO', segments: ['GA', 'TO'], type: 'SÍLABA' },
-            { word: 'BOLA', segments: ['BO', 'LA'], type: 'SÍLABA' },
-            { word: 'SAPO', segments: ['SA', 'PO'], type: 'SÍLABA' },
-            { word: 'FOCA', segments: ['FO', 'CA'], type: 'SÍLABA' },
-            { word: 'JANELA', segments: ['JA', 'NE', 'LA'], type: 'SÍLABA' },
-            { word: 'MACACO', segments: ['MA', 'CA', 'CO'], type: 'SÍLABA' },
-            { word: 'LIVRO', segments: ['LI', 'VRO'], type: 'SÍLABA' },
-            { word: 'DADO', segments: ['DA', 'DO'], type: 'SÍLABA' },
-            { word: 'CARRO', segments: ['CAR', 'RO'], type: 'SÍLABA' },
-        ];
-
-        const COUNTING_PUZZLES = [
-            { objects: '🍎', count: 3 },
-            { objects: '⭐', count: 5 },
-            { objects: '🎈', count: 8 },
-            { objects: '🦆', count: 4 },
-            { objects: '🚀', count: 6 },
-            { objects: '🌈', count: 7 },
-            { objects: '🐟', count: 2 },
-            { objects: '🌙', count: 9 },
-            { objects: '👑', count: 10 },
-        ];
-        
-        // Nova atividade: Ache a Sílaba Inicial
-        const INITIAL_SYLLABLE_PUZZLES = [
-            { word: 'FOGUETE', correctSyllable: 'FO', options: ['GU', 'FO', 'TE', 'TO'] },
-            { word: 'CORUJA', correctSyllable: 'CO', options: ['RU', 'JA', 'CA', 'CO'] },
-            { word: 'PEIXE', correctSyllable: 'PEI', options: ['XE', 'PE', 'PEI', 'PA'] },
-            { word: 'TELEFONE', correctSyllable: 'TE', options: ['FO', 'NE', 'TE', 'DE'] },
-            { word: 'BICICLETA', correctSyllable: 'BI', options: ['CI', 'TA', 'BO', 'BI'] },
-        ];
 
         // --- ESTADO GLOBAL ---
         const app = document.getElementById('app');
         let playerName = localStorage.getItem('playerName') || '';
         let playerScore = parseInt(localStorage.getItem('playerScore')) || 0;
         let currentAlphabetIndex = 0;
-        let currentWordPuzzleIndex = 0;
+        let currentWordPuzzleIndex = 0; // Para Formação de Palavras (Sílabas Click)
         let currentCountingPuzzleIndex = 0;
         let currentInitialSyllableIndex = 0;
         let currentSyllablePage = 0;
-        const SYLLABLES_PER_PAGE = 5; // Uma consoante por página (BA BE BI BO BU)
+        let currentWordPuzzleGameIndex = 0; // Para Quebra-Cabeça (Drag & Drop)
+        let nextLetterId = 0; // Contador global para IDs únicos de letras drag & drop
+        
+        let memoryGameState = {
+            cards: [],
+            flippedCards: [],
+            lockBoard: false,
+            matchesFound: 0
+        };
 
-        // --- SISTEMA DE RANKING ---
+        const SYLLABLES_PER_PAGE = 5;
+
+        // --- SISTEMA DE RANKING E UTILITÁRIOS ---
         function getRanking() {
             const ranking = localStorage.getItem('gameRanking');
             return ranking ? JSON.parse(ranking) : [];
@@ -475,35 +548,20 @@
 
         function saveToRanking(name, score) {
             const ranking = getRanking();
-            
-            // Verifica se o jogador já existe no ranking
             const existingPlayerIndex = ranking.findIndex(player => player.name === name);
-            
             if (existingPlayerIndex !== -1) {
-                // Atualiza score se for maior
                 if (score > ranking[existingPlayerIndex].score) {
                     ranking[existingPlayerIndex].score = score;
                     ranking[existingPlayerIndex].date = new Date().toLocaleDateString('pt-BR');
                 }
             } else {
-                // Adiciona novo jogador
-                ranking.push({
-                    name: name,
-                    score: score,
-                    date: new Date().toLocaleDateString('pt-BR')
-                });
+                ranking.push({ name: name, score: score, date: new Date().toLocaleDateString('pt-BR') });
             }
-            
-            // Ordena por score (maior primeiro)
             ranking.sort((a, b) => b.score - a.score);
-            
-            // Mantém apenas os top 10
             const topRanking = ranking.slice(0, 10);
-            
             localStorage.setItem('gameRanking', JSON.stringify(topRanking));
         }
 
-        // --- PONTUAÇÃO E FEEDBACK ---
         function updateScore(points) {
             playerScore += points;
             localStorage.setItem('playerScore', playerScore);
@@ -514,38 +572,28 @@
         }
 
         function updatePlayerName(name) {
-            // Salva o score atual no ranking antes de mudar
             if (playerName && playerScore > 0) {
                 saveToRanking(playerName, playerScore);
             }
-            
-            // Zera o score e atualiza o nome
             playerName = name.toUpperCase();
             playerScore = 0;
-            
             localStorage.setItem('playerName', playerName);
             localStorage.setItem('playerScore', playerScore);
-            
             goToScreen('home');
         }
 
         function resetPlayerData() {
-            // Salva o score atual no ranking
             if (playerName && playerScore > 0) {
                 saveToRanking(playerName, playerScore);
             }
-            
-            // Limpa dados do jogador atual
             playerName = '';
             playerScore = 0;
-            
             localStorage.removeItem('playerName');
             localStorage.removeItem('playerScore');
-            
             goToScreen('welcome');
         }
-
-        // Função utilitária para embaralhar arrays (Fisher-Yates)
+        
+        // Função utilitária para embaralhar arrays
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -554,17 +602,46 @@
             return array;
         }
 
-        // Feedback Simples
         function playSound(type) {
+            // Placeholder para futuras implementações de áudio ou som
             console.log(`[SOUND: ${type}]`);
         }
         
+        function showFeedback(message, color = 'green', duration = 2000) {
+            let feedback = document.getElementById('feedback-alert');
+            if (!feedback) {
+                feedback = document.createElement('div');
+                feedback.id = 'feedback-alert';
+                feedback.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-xl font-bold text-white shadow-xl z-50 transition-all duration-300 opacity-0 scale-90';
+                document.body.appendChild(feedback);
+            }
+            
+            let bgColor = `bg-${color}-500`;
+            if (color === 'red') bgColor = 'bg-red-600';
+            if (color === 'blue') bgColor = 'bg-blue-600';
+            if (color === 'yellow') bgColor = 'bg-yellow-600';
+            if (color === 'green') bgColor = 'bg-green-600';
+            if (color === 'teal') bgColor = 'bg-teal-600';
+
+            feedback.className = `fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-xl font-bold text-white shadow-xl z-50 transition-all duration-300 opacity-0 scale-90 ${bgColor}`;
+            feedback.innerHTML = message;
+            
+            setTimeout(() => {
+                feedback.classList.remove('opacity-0', 'scale-90');
+                feedback.classList.add('opacity-100', 'scale-100');
+            }, 50);
+
+            setTimeout(() => {
+                feedback.classList.remove('opacity-100', 'scale-100');
+                feedback.classList.add('opacity-0', 'scale-90');
+            }, duration);
+        }
+
         // Função para ir para uma tela específica
         function goToScreen(screenName) {
-            // Para qualquer áudio que esteja tocando
             syllableAudio.stop();
+            app.innerHTML = '';
             
-            app.innerHTML = ''; // Limpa o conteúdo anterior
             if (screenName === 'welcome') {
                 renderWelcome();
             } else if (screenName === 'home') {
@@ -587,6 +664,12 @@
             } else if (screenName === 'allSyllables') {
                 currentSyllablePage = 0;
                 renderAllSyllables();
+            } else if (screenName === 'wordPuzzle') {
+                currentWordPuzzleGameIndex = 0;
+                shuffleArray(WORD_PUZZLES_DATA);
+                renderWordPuzzleGame();
+            } else if (screenName === 'memoryGame') {
+                renderMemoryGame();
             } else if (screenName === 'ranking') {
                 renderRanking();
             } else if (screenName === 'changeName') {
@@ -597,42 +680,43 @@
         // --- 0. TELA DE BOAS-VINDAS E NOME ---
         function renderWelcome() {
             app.innerHTML = `
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-blue-700 mb-6 text-center">
-                    🚢 Bem-vindo à Arca do Conhecimento! 🧠
-                </h1>
-                <p class="text-xl text-gray-600 mb-8 text-center font-medium">
-                    Qual é o seu nome, jovem explorador(a)?
-                </p>
-                <div class="flex flex-col items-center gap-4">
-                    <input type="text" id="name-input" placeholder="Digite seu nome aqui" class="p-4 text-2xl border-2 border-blue-400 rounded-xl w-full max-w-sm text-center font-bold uppercase transition duration-300">
-                    <button onclick="handleNameInput()" class="py-3 px-8 bg-blue-500 text-white font-black text-xl rounded-xl hover:bg-blue-600 transition-all duration-200 shadow-lg mt-4">
-                        🚀 Começar a Aventura!
-                    </button>
-                </div>
-                <div class="mt-8 text-center">
-                    <button onclick="goToScreen('ranking')" class="text-sm text-gray-500 hover:text-gray-700 underline">
-                        📊 Ver Ranking dos Jogadores
-                    </button>
-                </div>
-                <div class="mt-4 text-center text-sm text-gray-400">
-                    Seu nome será salvo para suas próximas aventuras!
+                <div class="text-center">
+                    <h1 class="text-5xl font-extrabold text-blue-700 mb-4">🌈 Arca do Conhecimento</h1>
+                    <p class="text-xl text-gray-600 mb-8">Aprenda a ler brincando!</p>
+                    <div class="max-w-sm mx-auto p-6 bg-white rounded-xl shadow-lg border-2 border-blue-200">
+                        <h2 class="text-2xl font-bold text-blue-500 mb-4">Qual é o seu nome?</h2>
+                        <input
+                            type="text"
+                            id="name-input"
+                            placeholder="Digite seu nome aqui"
+                            maxlength="15"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg text-center mb-6 focus:border-blue-500 transition-all duration-200"
+                        />
+                        <button
+                            onclick="handleNameInput()"
+                            class="w-full py-3 px-6 bg-blue-500 text-white font-bold text-xl rounded-xl shadow-md hover:bg-blue-600 transition-all duration-200"
+                        >
+                            Começar!
+                        </button>
+                    </div>
                 </div>
             `;
-            
-            // Adiciona o nome salvo, se existir
-            const nameInput = document.getElementById('name-input');
-            if (playerName) {
-                nameInput.value = playerName;
-                nameInput.placeholder = `Olá, ${playerName}!`;
-            }
+            document.getElementById('name-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleNameInput();
+                }
+            });
         }
 
         function handleNameInput() {
-            const name = document.getElementById('name-input').value.trim();
+            const input = document.getElementById('name-input');
+            const name = input.value.trim();
             if (name.length > 1) {
                 updatePlayerName(name);
             } else {
-                showFeedback("Por favor, digite um nome válido!", 'red', 1500);
+                showFeedback('Por favor, digite um nome válido.', 'red', 2000);
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 500);
             }
         }
 
@@ -656,6 +740,8 @@
                     ${createGameButton('Forme Palavras', 'Monte letras e sílabas', 'bg-green-500', 'words')}
                     ${createGameButton('Contagem', 'Aprenda a contar objetos', 'bg-yellow-500', 'counting')}
                     ${createGameButton('Ache a Sílaba', 'Identifique a sílaba inicial', 'bg-purple-500', 'initialSyllable')}
+                    ${createGameButton('Quebra-Cabeça', 'Arraste letras para formar palavras', 'bg-pink-500', 'wordPuzzle')}
+                    ${createGameButton('Jogo da Memória', 'Ache pares de palavras e sílabas', 'bg-teal-500', 'memoryGame')}
                     ${createGameButton('Mudar Nome', `Zerar score e trocar nome`, 'bg-gray-400', 'changeName')}
                     ${createGameButton('Ranking', 'Top 10 melhores jogadores', 'bg-yellow-400', 'ranking')}
                 </div>
@@ -664,12 +750,11 @@
                 </div>
             `;
         }
-        
-        // Helper para criar botões do menu
+
         function createGameButton(title, description, color, target) {
             return `
-                <button 
-                    onclick="goToScreen('${target}')" 
+                <button
+                    onclick="goToScreen('${target}')"
                     class="p-6 h-full flex flex-col items-center justify-center text-white rounded-xl shadow-lg transform transition duration-200 hover:scale-[1.03] ${color}"
                 >
                     <span class="text-3xl font-black mb-2">${title}</span>
@@ -678,239 +763,146 @@
             `;
         }
 
-        // --- 2. TELA DE MUDANÇA DE NOME ---
-        function renderChangeName() {
-            app.innerHTML = `
-                <h2 class="text-3xl font-bold text-gray-600 mb-6 text-center">Mudar Nome</h2>
-                
-                <div class="bg-gray-100 p-8 rounded-2xl border-4 border-gray-400 shadow-inner mb-8">
-                    <div class="text-center mb-6">
-                        <p class="text-2xl text-gray-700 mb-2">Jogador atual:</p>
-                        <p class="text-3xl font-bold text-blue-600">${playerName}</p>
-                        <p class="text-xl text-yellow-600 mt-2">⭐ Pontos atuais: ${playerScore}</p>
-                    </div>
-                    
-                    <div class="text-center mb-6">
-                        <p class="text-lg text-red-600 font-bold mb-4">
-                            ⚠️ Atenção: Ao mudar o nome, seus pontos atuais serão salvos no ranking e sua pontuação será zerada!
-                        </p>
-                    </div>
-                    
-                    <div class="flex flex-col items-center gap-4">
-                        <input type="text" id="new-name-input" placeholder="Digite seu novo nome" class="p-4 text-2xl border-2 border-blue-400 rounded-xl w-full max-w-sm text-center font-bold uppercase transition duration-300">
-                        <button onclick="handleChangeName()" class="py-3 px-8 bg-blue-500 text-white font-black text-xl rounded-xl hover:bg-blue-600 transition-all duration-200 shadow-lg">
-                            ✅ Confirmar Mudança
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex justify-center gap-4 flex-wrap">
-                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
-                        🏠 Voltar ao Menu
-                    </button>
-                    <button onclick="resetPlayerData()" class="py-3 px-6 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-all duration-200 shadow-md">
-                        🔄 Reiniciar Tudo
-                    </button>
-                </div>
-            `;
-        }
-
-        function handleChangeName() {
-            const newName = document.getElementById('new-name-input').value.trim();
-            if (newName.length > 1) {
-                if (newName.toUpperCase() === playerName) {
-                    showFeedback("Este já é seu nome atual!", 'blue', 1500);
-                } else {
-                    updatePlayerName(newName);
-                    showFeedback(`Nome alterado para ${newName}! Score zerado.`, 'green', 2000);
-                }
-            } else {
-                showFeedback("Por favor, digite um nome válido!", 'red', 1500);
-            }
-        }
-
-        // --- 3. TELA DE RANKING ---
-        function renderRanking() {
-            const ranking = getRanking();
-            
-            app.innerHTML = `
-                <h2 class="text-3xl font-bold text-yellow-600 mb-6 text-center">🏆 Ranking dos Jogadores</h2>
-                
-                <div class="bg-yellow-50 p-6 rounded-2xl border-4 border-yellow-400 shadow-inner mb-8">
-                    ${ranking.length === 0 ? `
-                        <div class="text-center py-8">
-                            <p class="text-2xl text-gray-600 mb-4">📊</p>
-                            <p class="text-xl text-gray-700">Nenhum jogador no ranking ainda!</p>
-                            <p class="text-lg text-gray-500 mt-2">Jogue alguns jogos para aparecer aqui!</p>
-                        </div>
-                    ` : `
-                        <div class="space-y-3">
-                            ${ranking.map((player, index) => `
-                                <div class="ranking-item flex items-center justify-between p-4 bg-white rounded-xl border-2 border-yellow-200 shadow-sm">
-                                    <div class="flex items-center gap-4">
-                                        <div class="text-2xl font-black ${
-                                            index === 0 ? 'text-yellow-500' : 
-                                            index === 1 ? 'text-gray-400' : 
-                                            index === 2 ? 'text-orange-600' : 'text-blue-600'
-                                        }">
-                                            ${index + 1}º
-                                        </div>
-                                        <div>
-                                            <div class="text-xl font-bold text-gray-800">${player.name}</div>
-                                            <div class="text-sm text-gray-500">${player.date}</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-2xl font-black text-yellow-600">
-                                        ⭐ ${player.score}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `}
-                </div>
-
-                <div class="flex justify-center gap-4 flex-wrap">
-                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
-                        🏠 Voltar ao Menu
-                    </button>
-                    ${playerName ? `
-                        <button onclick="saveToRanking('${playerName}', ${playerScore})" class="py-3 px-6 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition-all duration-200 shadow-md">
-                            💾 Salvar Meu Score
-                        </button>
-                    ` : ''}
-                </div>
-                
-                ${playerName && playerScore > 0 ? `
-                    <div class="mt-4 text-center">
-                        <p class="text-sm text-gray-600">
-                            Seu score atual: <span class="font-bold">${playerScore} pontos</span>
-                        </p>
-                    </div>
-                ` : ''}
-            `;
-        }
-
-        // --- 4. JOGO DO ALFABETO ---
+        // --- 2. JOGO DO ALFABETO (Letra + Palavra) ---
         function renderAlphabetGame() {
             if (currentAlphabetIndex >= ALPHABET_DATA.length) {
-                app.innerHTML = `<p class="text-3xl text-red-600 text-center font-bold my-10">Parabéns, ${playerName}! Você viu o alfabeto inteiro!</p>`;
-                setTimeout(() => goToScreen('home'), 3000);
+                showFeedback(`🎉 Fim do Alfabeto! Voltando ao menu.`, 'blue', 2000);
+                goToScreen('home');
                 return;
             }
 
             const data = ALPHABET_DATA[currentAlphabetIndex];
+            const initialSyllable = data.syllables[0];
+            const highlightedWord = data.word.replace(initialSyllable, `<span class="highlight-syllable">${initialSyllable}</span>`);
 
             app.innerHTML = `
-                <h2 class="text-3xl font-bold text-red-600 mb-6 text-center">Alfabeto: Letra e Palavra</h2>
+                <h2 class="text-3xl font-bold text-red-600 mb-6 text-center">🅰️ O Alfabeto (Letra e Palavra)</h2>
                 
-                <div class="bg-red-100 p-8 rounded-2xl border-4 border-red-500 flex flex-col items-center justify-center shadow-inner mb-8">
-                    <div class="text-[120px] font-black text-red-700 leading-none mb-4 animate-pulse">
-                        ${data.letter}
-                    </div>
-                    <p class="text-5xl mb-4">${data.emoji}</p>
-                    <p class="text-4xl sm:text-5xl font-extrabold text-red-700 tracking-wider">
-                        ${data.word}
-                    </p>
-                    <div class="mt-4 flex flex-wrap justify-center gap-2">
-                        ${data.syllables.map(syllable => `
-                            <span class="px-3 py-1 bg-red-200 text-red-800 rounded-lg text-xl font-bold border-2 border-red-400">
-                                ${syllable}
-                            </span>
-                        `).join('')}
-                    </div>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1">
+                        ⭐ Pontos: ${playerScore}
+                    </span>
                 </div>
 
-                <div class="flex justify-between mt-4">
-                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
-                        🏠 Voltar
-                    </button>
-                    <button onclick="nextAlphabet()" class="py-3 px-6 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-all duration-200 shadow-md">
-                        Próxima Letra ( ${currentAlphabetIndex + 1} / ${ALPHABET_DATA.length} )
-                    </button>
+                <div class="bg-red-50 p-8 rounded-2xl border-4 border-red-300 shadow-inner flex flex-col items-center">
+                    <div
+                        class="letter-card bg-white p-10 rounded-xl shadow-lg border-b-8 border-red-500 mb-6 text-center w-full max-w-sm cursor-pointer"
+                        onclick="playLetterAndWord('${data.letter}', '${data.word}')"
+                        data-text="${data.letter}"
+                    >
+                        <span class="text-9xl font-black text-red-700 block mb-2">${data.letter}</span>
+                        <p class="text-4xl font-extrabold text-gray-800">${data.emoji} ${highlightedWord}</p>
+                        <p class="text-sm text-gray-500 mt-2">Clique para ouvir a letra e a palavra</p>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button
+                            onclick="nextAlphabetLetter()"
+                            class="py-3 px-6 bg-red-500 text-white font-bold text-xl rounded-xl shadow-md hover:bg-red-600 transition-all duration-200"
+                        >
+                            Próxima Letra (L +10)
+                        </button>
+                        <button
+                            onclick="goToScreen('home')"
+                            class="py-3 px-6 bg-gray-400 text-white font-bold text-xl rounded-xl shadow-md hover:bg-gray-500 transition-all duration-200"
+                        >
+                            Voltar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Letra ${currentAlphabetIndex + 1} de ${ALPHABET_DATA.length}
                 </div>
             `;
+
+            // Garante que o som inicial seja reproduzido automaticamente, se for a primeira letra
+            if (currentAlphabetIndex === 0) {
+                 playLetterAndWord(data.letter, data.word);
+            }
         }
-        
-        function nextAlphabet() {
+
+        function nextAlphabetLetter() {
+            updateScore(10);
             currentAlphabetIndex++;
             renderAlphabetGame();
         }
 
-        // --- 5. MÓDULO TODAS AS SÍLABAS ---
+        // --- 3. MÓDULO: TODAS AS SÍLABAS (Exemplos) ---
         function renderAllSyllables() {
-            const startIndex = currentSyllablePage * SYLLABLES_PER_PAGE;
-            const endIndex = startIndex + SYLLABLES_PER_PAGE;
-            const currentSyllables = ALL_SYLLABLES_DATA.slice(startIndex, endIndex);
+            const start = currentSyllablePage * SYLLABLES_PER_PAGE;
+            const end = start + SYLLABLES_PER_PAGE;
+            const currentPageSyllables = ALL_SYLLABLES_DATA.slice(start, end);
             const totalPages = Math.ceil(ALL_SYLLABLES_DATA.length / SYLLABLES_PER_PAGE);
-            
-            // Determinar qual consoante está sendo mostrada
-            const currentConsonant = currentSyllables[0]?.syllable[0] || 'B';
-            const pageTitle = `Sílabas com a Letra ${currentConsonant}`;
 
             app.innerHTML = `
-                <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">Todas as Sílabas</h2>
-                <p class="text-2xl text-gray-700 mb-8 text-center font-bold">${pageTitle}</p>
-                <p class="text-lg text-gray-600 mb-6 text-center">
-                    🔊 <strong>Clique na sílaba</strong> para ouvir: "Sílaba" + "Palavras exemplo"<br>
-                    🔊 <strong>Clique nas palavras</strong> para ouvir cada uma separadamente
-                </p>
-                
-                <div class="grid grid-cols-1 gap-4 mb-8">
-                    ${currentSyllables.map(syllable => `
-                        <div class="syllable-card bg-indigo-50 p-6 rounded-xl border-2 border-indigo-300 shadow-md">
-                            <div 
-                                class="flex items-center justify-between mb-4 cursor-pointer"
-                                onclick="playSyllableWithExamples(${JSON.stringify(syllable).replace(/"/g, '&quot;')})"
-                                data-text="${syllable.syllable}"
-                            >
-                                <div class="flex items-center gap-4">
-                                    <div class="text-5xl font-black text-indigo-700" data-text="${syllable.syllable}">${syllable.syllable}</div>
-                                    <div class="speaker-icon text-3xl text-indigo-500">🔊</div>
-                                </div>
-                                <div class="text-4xl">${syllable.emoji}</div>
-                            </div>
-                            <div class="text-lg text-indigo-800 font-medium">
-                                <div class="mb-2 font-bold">Palavras com ${syllable.syllable}:</div>
-                                <div class="flex flex-wrap gap-2">
-                                    ${syllable.words.map(word => `
-                                        <span 
-                                            class="word-example px-3 py-2 bg-indigo-200 rounded-lg text-indigo-900 text-xl font-bold border-2 border-indigo-300"
-                                            onclick="playWordExample('${word}')"
-                                            data-text="${word}"
-                                        >
-                                            ${word}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
+                <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">📚 Explorando as Sílabas</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <span id="score-display" class="text-xl font-black text-yellow-600"> ⭐ Pontos: ${playerScore} </span>
+                    <button
+                        onclick="goToScreen('home')"
+                        class="py-2 px-4 bg-gray-400 text-white font-bold rounded-xl hover:bg-gray-500 transition-all duration-200"
+                    >
+                        Voltar
+                    </button>
                 </div>
 
-                <div class="flex justify-between items-center mt-6">
-                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
-                        🏠 Voltar
-                    </button>
+                <div class="bg-indigo-50 p-6 rounded-2xl border-4 border-indigo-300 shadow-inner">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        ${currentPageSyllables.map(data => {
+                            // CORREÇÃO: Pula e insere um espaço vazio para os placeholders
+                            if (data.placeholder) {
+                                return `<div class="p-4 rounded-xl"></div>`; // Div vazia para ocupar o espaço do grid
+                            }
+
+                            const wordsHtml = data.words.map(word => `
+                                <span 
+                                    class="word-example text-sm text-gray-600 inline-block px-2 py-1 bg-indigo-100 rounded-full mr-1 mt-1 border border-indigo-200" 
+                                    data-text="${word}"
+                                    onclick="event.stopPropagation(); playWordExample('${word}')"
+                                >
+                                    ${word}
+                                </span>
+                            `).join('');
+                            
+                            const wordsString = data.words.join("','"); // Para a função de áudio
+                            
+                            return `
+                                <div
+                                    class="syllable-card bg-white p-4 rounded-xl shadow-lg border-b-4 border-indigo-500 text-center cursor-pointer flex flex-col justify-between"
+                                    onclick="playSyllableWithExamples({syllable: '${data.syllable}', words: ['${wordsString}']})"
+                                >
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-5xl font-black text-indigo-700 block">${data.syllable.toUpperCase()}</span>
+                                        <span class="text-3xl text-gray-500">${data.emoji}</span>
+                                    </div>
+                                    <div class="mt-3 text-left">
+                                        <p class="text-lg font-semibold text-gray-700">Exemplos:</p>
+                                        ${wordsHtml}
+                                    </div>
+                                    <div class="text-right mt-2">
+                                        <span class="speaker-icon text-indigo-500 text-2xl">🔊</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
                     
-                    <div class="flex items-center gap-4">
-                        <button 
-                            onclick="previousSyllablePage()" 
+                    <div class="flex justify-between items-center mt-6">
+                        <button
+                            onclick="prevSyllablePage()"
+                            class="py-2 px-4 bg-indigo-500 text-white font-bold rounded-xl hover:bg-indigo-600 transition-all duration-200 disabled:opacity-50"
                             ${currentSyllablePage === 0 ? 'disabled' : ''}
-                            class="py-2 px-4 bg-indigo-500 text-white font-bold rounded-xl hover:bg-indigo-600 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            ← Anterior
+                            &larr; Anterior
                         </button>
-                        
-                        <span class="text-lg font-bold text-indigo-700">
-                            Página ${currentSyllablePage + 1} de ${totalPages}
-                        </span>
-                        
-                        <button 
-                            onclick="nextSyllablePage()" 
+                        <span class="text-sm font-semibold text-indigo-700">Página ${currentSyllablePage + 1} de ${totalPages}</span>
+                        <button
+                            onclick="nextSyllablePage()"
+                            class="py-2 px-4 bg-indigo-500 text-white font-bold rounded-xl hover:bg-indigo-600 transition-all duration-200 disabled:opacity-50"
                             ${currentSyllablePage >= totalPages - 1 ? 'disabled' : ''}
-                            class="py-2 px-4 bg-indigo-500 text-white font-bold rounded-xl hover:bg-indigo-600 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Próxima →
+                            Próxima &rarr;
                         </button>
                     </div>
                 </div>
@@ -918,344 +910,894 @@
         }
 
         function nextSyllablePage() {
-            const totalPages = Math.ceil(ALL_SYLLABLES_DATA.length / SYLLABLES_PER_PAGE);
-            if (currentSyllablePage < totalPages - 1) {
-                currentSyllablePage++;
-                renderAllSyllables();
-            }
+            currentSyllablePage++;
+            renderAllSyllables();
         }
 
-        function previousSyllablePage() {
-            if (currentSyllablePage > 0) {
-                currentSyllablePage--;
-                renderAllSyllables();
-            }
+        function prevSyllablePage() {
+            currentSyllablePage--;
+            renderAllSyllables();
         }
 
-        // --- 6. JOGO DE CONTAGEM (COM PONTOS) ---
-        function renderCountingGame() {
-            if (currentCountingPuzzleIndex >= COUNTING_PUZZLES.length) {
-                app.innerHTML = `<p class="text-3xl text-yellow-600 text-center font-bold my-10">${playerName}, você contou todos os objetos! Muito bem!</p>`;
-                setTimeout(() => goToScreen('home'), 3000);
-                return;
-            }
+        // --- 4. MÓDULO: FORMAÇÃO DE PALAVRAS (Sílabas Click) ---
+        let currentWordSegments = [];
 
-            const puzzle = COUNTING_PUZZLES[currentCountingPuzzleIndex];
-            const correctCount = puzzle.count;
-            
-            const objectString = Array(correctCount).fill(puzzle.objects).join(' ');
-            
-            let options = [correctCount];
-            while (options.length < 4) {
-                let randomOption = Math.floor(Math.random() * 10) + 1;
-                if (!options.includes(randomOption)) {
-                    options.push(randomOption);
-                }
-            }
-            shuffleArray(options);
-
-            app.innerHTML = `
-                <h2 class="text-3xl font-bold text-yellow-600 mb-6 text-center">Contagem de Números</h2>
-                <p class="text-2xl text-gray-700 mb-4 text-center">Quantos ${puzzle.objects} você vê?</p>
-                
-                <div class="bg-yellow-100 p-8 rounded-2xl border-4 border-yellow-500 flex flex-col items-center justify-center shadow-inner mb-8">
-                    <div class="text-6xl sm:text-7xl font-extrabold text-yellow-800 text-center p-4 min-h-[100px]">
-                        ${objectString}
-                    </div>
-                </div>
-
-                <div id="options-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    ${options.map(num => `
-                        <button 
-                            onclick="checkCountingAnswer(${num}, ${correctCount}, this)" 
-                            class="py-4 text-3xl font-black bg-yellow-400 text-white rounded-xl transform transition duration-150 hover:scale-105 shadow-lg border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1"
-                        >
-                            ${num}
-                        </button>
-                    `).join('')}
-                </div>
-                
-                <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md w-full">
-                    🏠 Voltar ao Menu
-                </button>
-            `;
-        }
-
-        function checkCountingAnswer(selected, correct, button) {
-            const optionsContainer = document.getElementById('options-container');
-            Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
-            
-            if (selected === correct) {
-                button.classList.add('bg-green-500', 'border-green-700', 'ring-4', 'ring-green-300');
-                showFeedback("🎉 Correto! Ganhou 10 pontos!", 'green');
-                playSound('success');
-                updateScore(10); // Adiciona pontos!
-                setTimeout(() => {
-                    currentCountingPuzzleIndex++;
-                    renderCountingGame();
-                }, 2000);
-            } else {
-                button.classList.add('bg-red-500', 'border-red-700', 'ring-4', 'ring-red-300');
-                Array.from(optionsContainer.children).find(btn => parseInt(btn.textContent.trim()) === correct)
-                    .classList.add('bg-green-300');
-                    
-                showFeedback("❌ Tente de novo! O número correto é " + correct + ".", 'red');
-                playSound('error');
-                
-                setTimeout(() => {
-                    currentCountingPuzzleIndex++;
-                    renderCountingGame();
-                }, 3000);
-            }
-        }
-        
-        // --- 7. JOGO DE FORMAÇÃO DE PALAVRAS (SÍLABAS/LETRAS - COM PONTOS) ---
         function renderWordFormationGame() {
             if (currentWordPuzzleIndex >= WORD_PUZZLES.length) {
-                app.innerHTML = `<p class="text-3xl text-green-600 text-center font-bold my-10">${playerName}, você formou todas as palavras! Brilhante!</p>`;
-                setTimeout(() => goToScreen('home'), 3000);
+                showFeedback('🎉 Você formou todas as palavras! +100 pontos!', 'green', 3000);
+                updateScore(100);
+                goToScreen('home');
                 return;
             }
 
             const puzzle = WORD_PUZZLES[currentWordPuzzleIndex];
-            const correctOrder = puzzle.word; // A palavra completa
-            const shuffledSegments = shuffleArray([...puzzle.segments]);
-            
-            let currentWord = [];
+            const segments = shuffleArray([...puzzle.segments]);
 
             app.innerHTML = `
-                <h2 class="text-3xl font-bold text-green-600 mb-6 text-center">Forme a Palavra (Peças: ${puzzle.type})</h2>
-                <p class="text-2xl text-gray-700 mb-4 text-center">Monte a palavra: <span class="font-bold text-green-700">${puzzle.word}</span></p>
+                <h2 class="text-3xl font-bold text-green-600 mb-6 text-center">🧩 Forme a Palavra (Sílabas)</h2>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1"> ⭐ Pontos: ${playerScore} </span>
+                </div>
                 
-                <div id="word-display" class="bg-green-100 p-6 sm:p-8 min-h-[100px] rounded-2xl border-4 border-green-500 shadow-inner mb-8 flex flex-wrap justify-center items-center gap-2">
-                    <span class="text-4xl sm:text-5xl font-black text-gray-400">Clique nas peças abaixo</span>
+                <div class="bg-green-50 p-8 rounded-2xl border-4 border-green-300 shadow-inner flex flex-col items-center">
+                    
+                    <div class="mb-8 p-4 bg-white rounded-xl shadow-inner border-2 border-gray-200 w-full max-w-lg">
+                        <p class="text-xl text-gray-600 mb-2 font-semibold text-center">Palavra a ser formada:</p>
+                        <div id="word-slots" class="flex justify-center space-x-3 bg-green-100 p-4 rounded-lg border-2 border-green-400 min-h-[70px]">
+                            ${puzzle.segments.map((segment, index) => `
+                                <div 
+                                    id="slot-syllable-${index}"
+                                    class="syllable-slot w-24 h-16 bg-white border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-3xl font-bold text-gray-500"
+                                >
+                                    ?
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <p class="text-xl text-gray-700 mb-4 font-semibold">Escolha a próxima sílaba:</p>
+                    <div id="syllable-options" class="flex flex-wrap justify-center gap-4 mb-8">
+                        ${segments.map(segment => `
+                            <button
+                                onclick="addSyllableToWord('${segment}')"
+                                class="syllable-option py-3 px-6 bg-green-500 text-white font-black text-2xl rounded-xl shadow-md transform transition duration-200 hover:scale-[1.05] hover:bg-green-600"
+                                data-syllable="${segment}"
+                            >
+                                ${segment}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button
+                            onclick="checkWordFormation()"
+                            class="py-3 px-6 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition-all duration-200 shadow-md"
+                        >
+                            Verificar
+                        </button>
+                        <button
+                            onclick="resetWordFormation()"
+                            class="py-3 px-6 bg-yellow-500 text-white font-bold rounded-xl hover:bg-yellow-600 transition-all duration-200 shadow-md"
+                        >
+                            Limpar
+                        </button>
+                        <button
+                            onclick="goToScreen('home')"
+                            class="py-3 px-6 bg-gray-400 text-white font-bold rounded-xl hover:bg-gray-500 transition-all duration-200"
+                        >
+                            Voltar
+                        </button>
+                    </div>
                 </div>
 
-                <div id="segment-options" class="flex flex-wrap justify-center gap-3 mb-6">
-                    ${shuffledSegments.map((segment, index) => `
-                        <button 
-                            id="seg-${index}"
-                            onclick="addSegment('${segment}', this)" 
-                            data-segment="${segment}"
-                            class="py-3 px-5 text-2xl font-black bg-green-400 text-white rounded-xl transform transition duration-150 hover:scale-105 shadow-lg border-b-4 border-green-600 active:border-b-0 active:translate-y-1"
-                        >
-                            ${segment}
-                        </button>
-                    `).join('')}
-                </div>
-                
-                <div class="flex justify-center gap-4 flex-wrap">
-                    <button onclick="checkWord('${correctOrder}')" class="py-3 px-6 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition-all duration-200 shadow-md">
-                        Checar Palavra
-                    </button>
-                    <button onclick="resetWordFormation()" class="py-3 px-6 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all duration-200 shadow-md">
-                        Limpar
-                    </button>
-                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
-                        🏠 Voltar
-                    </button>
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Palavra ${currentWordPuzzleIndex + 1} de ${WORD_PUZZLES.length}
                 </div>
             `;
+            currentWordSegments = [];
             
-            window.currentWordFormationState = { currentWord, correctOrder, puzzle };
-            updateWordDisplay();
-        }
-
-        function updateWordDisplay() {
-            const display = document.getElementById('word-display');
-            const state = window.currentWordFormationState;
-            
-            if (display) {
-                if (state.currentWord.length === 0) {
-                    display.innerHTML = '<span class="text-4xl sm:text-5xl font-black text-gray-400">Clique nas peças abaixo</span>';
-                } else {
-                    display.innerHTML = state.currentWord.map(seg => 
-                        `<span class="inline-block px-2 py-1 bg-green-300 text-green-800 rounded-lg text-4xl font-bold border-2 border-green-500">${seg}</span>`
-                    ).join('');
-                }
+            // Pré-seleciona o primeiro slot para feedback visual
+            const firstSlot = document.getElementById('slot-syllable-0');
+            if (firstSlot) {
+                firstSlot.style.borderColor = '#34d399'; // green-400
+                firstSlot.style.backgroundColor = '#dcfce7'; // green-50
             }
         }
-        
-        function addSegment(segment, button) {
-            const state = window.currentWordFormationState;
+
+        function addSyllableToWord(syllable) {
+            const index = currentWordSegments.length;
+            const puzzle = WORD_PUZZLES[currentWordPuzzleIndex];
+
+            if (index >= puzzle.segments.length) {
+                showFeedback('Palavra completa! Clique em Verificar.', 'yellow', 1500);
+                return;
+            }
+
+            currentWordSegments.push(syllable);
+            const slot = document.getElementById(`slot-syllable-${index}`);
+            const button = document.querySelector(`.syllable-option[data-syllable="${syllable}"]`);
             
-            if (state.currentWord.length < state.puzzle.segments.length) {
-                 state.currentWord.push(segment);
-                 button.disabled = true;
-                 button.classList.replace('bg-green-400', 'bg-gray-300');
-                 button.classList.replace('hover:scale-105', 'hover:scale-100');
-                 button.classList.replace('border-green-600', 'border-gray-500');
-                 updateWordDisplay();
+            if (slot) {
+                slot.textContent = syllable;
+                slot.classList.remove('bg-white', 'border-dashed', 'border-gray-300');
+                slot.classList.add('bg-green-300', 'text-green-800', 'border-green-500');
+            }
+            if (button) {
+                button.disabled = true;
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+                button.classList.remove('hover:scale-[1.05]', 'hover:bg-green-600');
+            }
+            
+            // Remove highlight do slot atual e move para o próximo (se existir)
+            if (slot) {
+                slot.style.borderColor = '#10b981'; // green-500
+                slot.style.backgroundColor = '#ecfdf5'; // green-50
+            }
+
+            const nextIndex = index + 1;
+            const nextSlot = document.getElementById(`slot-syllable-${nextIndex}`);
+            if (nextSlot) {
+                nextSlot.style.borderColor = '#34d399'; // green-400
+                nextSlot.style.backgroundColor = '#dcfce7'; // green-50
             } else {
-                showFeedback("Palavra completa! Clique em 'Checar Palavra'.", 'blue', 1500);
+                showFeedback('Pronto para verificar!', 'blue', 1500);
             }
         }
 
         function resetWordFormation() {
-            const state = window.currentWordFormationState;
-            state.currentWord = [];
-            
-            const buttons = document.getElementById('segment-options').querySelectorAll('button');
-            buttons.forEach(button => {
-                button.disabled = false;
-                button.classList.replace('bg-gray-300', 'bg-green-400');
-                button.classList.replace('hover:scale-100', 'hover:scale-105');
-                button.classList.replace('border-gray-500', 'border-green-600');
-            });
-            updateWordDisplay();
-            showFeedback("Reiniciando...", 'orange', 1000);
+            currentWordSegments = [];
+            renderWordFormationGame(); // Recarrega a tela para resetar
         }
 
-        function checkWord(correctOrder) {
-            const state = window.currentWordFormationState;
-            const formedWord = state.currentWord.join('');
-            
-            if (formedWord === correctOrder) {
-                showFeedback(`⭐ Incrível! A palavra é ${correctOrder}! Ganhou 10 pontos!`, 'green');
-                playSound('success');
-                updateScore(10); // Adiciona pontos!
+        function checkWordFormation() {
+            const puzzle = WORD_PUZZLES[currentWordPuzzleIndex];
+            const correctWord = puzzle.word;
+            const builtWord = currentWordSegments.join('');
 
-                const buttons = document.getElementById('segment-options').querySelectorAll('button');
-                buttons.forEach(button => button.disabled = true);
+            if (builtWord === correctWord) {
+                showFeedback(`✅ Parabéns! Você formou a palavra ${correctWord}! +50 pontos.`, 'green', 2000);
+                playSound('success');
+                updateScore(50);
                 
+                // Marca slots como corretos
+                puzzle.segments.forEach((_, index) => {
+                    const slot = document.getElementById(`slot-syllable-${index}`);
+                    if (slot) {
+                        slot.classList.add('correct');
+                        slot.style.borderColor = '#16a34a'; // green-600
+                    }
+                });
+
+                // Toca a palavra
+                playWordExample(correctWord);
+
                 setTimeout(() => {
                     currentWordPuzzleIndex++;
                     renderWordFormationGame();
-                }, 3000);
+                }, 1500);
+
             } else {
-                if (state.currentWord.length === state.puzzle.segments.length) {
-                    showFeedback("❌ Ops! A ordem não está correta. Tente limpar e montar de novo.", 'red');
-                    playSound('error');
-                } else {
-                    showFeedback("Primeiro, clique nas peças para montar a palavra!", 'blue', 1500);
-                }
+                showFeedback(`❌ Palavra incorreta! Tente novamente. -10 pontos.`, 'red', 2000);
+                playSound('error');
+                updateScore(-10);
+
+                const slots = document.getElementById('word-slots');
+                slots.classList.add('shake');
+                setTimeout(() => slots.classList.remove('shake'), 500);
+
+                // Limpa e habilita botões novamente
+                resetWordFormation();
             }
         }
 
-        // --- 8. NOVA ATIVIDADE: ACHE A SÍLABA INICIAL (COM PONTOS) ---
+        // --- 5. MÓDULO: CONTAGEM ---
+        function renderCountingGame() {
+            if (currentCountingPuzzleIndex >= COUNTING_PUZZLES.length) {
+                showFeedback('🎉 Você completou todos os desafios de Contagem! +100 pontos!', 'blue', 3000);
+                updateScore(100);
+                goToScreen('home');
+                return;
+            }
+
+            const puzzle = COUNTING_PUZZLES[currentCountingPuzzleIndex];
+            const objectsString = puzzle.objects.repeat(puzzle.count);
+            
+            // Gera opções (número correto e 3 incorretos)
+            let options = [puzzle.count];
+            while (options.length < 4) {
+                const randomNum = Math.floor(Math.random() * 8) + 1; // 1 a 8
+                if (!options.includes(randomNum)) {
+                    options.push(randomNum);
+                }
+            }
+            options = shuffleArray(options);
+
+            app.innerHTML = `
+                <h2 class="text-3xl font-bold text-yellow-600 mb-6 text-center">🔢 Jogo da Contagem</h2>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1"> ⭐ Pontos: ${playerScore} </span>
+                </div>
+                
+                <div class="bg-yellow-50 p-8 rounded-2xl border-4 border-yellow-300 shadow-inner flex flex-col items-center">
+                    
+                    <p class="text-2xl font-semibold text-gray-700 mb-4 text-center">Quantos objetos você vê?</p>
+                    
+                    <div class="mb-8 p-6 bg-white rounded-xl shadow-lg border-4 border-yellow-400 w-full max-w-lg text-center">
+                        <div class="text-5xl sm:text-7xl break-all">${objectsString}</div>
+                    </div>
+
+                    <div id="counting-options" class="flex flex-wrap justify-center gap-4 mb-8">
+                        ${options.map(option => `
+                            <button
+                                onclick="checkCountingAnswer(${option}, ${puzzle.count})"
+                                class="py-4 px-8 bg-yellow-500 text-white font-black text-3xl rounded-xl shadow-md transform transition duration-200 hover:scale-[1.05] hover:bg-yellow-600 counting-option"
+                            >
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <button
+                        onclick="goToScreen('home')"
+                        class="py-3 px-6 bg-gray-400 text-white font-bold rounded-xl hover:bg-gray-500 transition-all duration-200"
+                    >
+                        Voltar
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Puzzle ${currentCountingPuzzleIndex + 1} de ${COUNTING_PUZZLES.length}
+                </div>
+            `;
+        }
+
+        function checkCountingAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.counting-option');
+            buttons.forEach(button => button.disabled = true); // Desabilita botões para evitar cliques múltiplos
+
+            if (selected === correct) {
+                showFeedback(`✅ Correto! Havia ${correct} objetos. +30 pontos!`, 'green', 2000);
+                playSound('success');
+                updateScore(30);
+
+                // Destaca o botão correto
+                document.querySelector(`.counting-option:nth-child(${buttons.length - 1 - buttons.length + buttons.length})`).classList.add('bg-green-500'); // Simplificado
+                
+                setTimeout(() => {
+                    currentCountingPuzzleIndex++;
+                    renderCountingGame();
+                }, 1500);
+
+            } else {
+                showFeedback(`❌ Incorreto! O número correto era ${correct}. -15 pontos.`, 'red', 2000);
+                playSound('error');
+                updateScore(-15);
+
+                // Destaca o correto e o incorreto
+                buttons.forEach(button => {
+                    if (parseInt(button.textContent.trim()) === correct) {
+                        button.classList.remove('bg-yellow-500');
+                        button.classList.add('bg-green-500');
+                    } else if (parseInt(button.textContent.trim()) === selected) {
+                        button.classList.remove('bg-yellow-500');
+                        button.classList.add('bg-red-500');
+                        button.classList.add('shake');
+                        setTimeout(() => button.classList.remove('shake'), 500);
+                    }
+                });
+
+                setTimeout(() => {
+                    currentCountingPuzzleIndex++;
+                    renderCountingGame();
+                }, 1500);
+            }
+        }
+
+        // --- 6. MÓDULO: ACHE A SÍLABA INICIAL ---
         function renderInitialSyllableGame() {
             if (currentInitialSyllableIndex >= INITIAL_SYLLABLE_PUZZLES.length) {
-                app.innerHTML = `<p class="text-3xl text-purple-600 text-center font-bold my-10">${playerName}, você é o mestre das sílabas!</p>`;
-                setTimeout(() => goToScreen('home'), 3000);
+                showFeedback('🎉 Você completou todos os desafios de Sílaba Inicial! +100 pontos!', 'blue', 3000);
+                updateScore(100);
+                goToScreen('home');
                 return;
             }
 
             const puzzle = INITIAL_SYLLABLE_PUZZLES[currentInitialSyllableIndex];
-            
-            // Criar a exibição da palavra com a sílaba inicial destacada em vermelho
-            const wordDisplay = puzzle.word.split('').map((char, index) => {
-                // Destaca apenas a primeira sílaba em vermelho
-                if (index < puzzle.correctSyllable.length) {
-                    return `<span class="highlight-syllable">${char}</span>`;
-                }
-                return char;
-            }).join('');
+            const highlightedWord = puzzle.word.replace(puzzle.correctSyllable, `<span class="highlight-syllable">${puzzle.correctSyllable}</span>`);
+            const options = shuffleArray([...puzzle.options]);
 
             app.innerHTML = `
-                <h2 class="text-3xl font-bold text-purple-600 mb-6 text-center">Ache a Sílaba Inicial</h2>
-                <p class="text-2xl text-gray-700 mb-4 text-center">Qual é a primeira sílaba da palavra:</p>
+                <h2 class="text-3xl font-bold text-purple-600 mb-6 text-center">🔍 Ache a Sílaba Inicial</h2>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1"> ⭐ Pontos: ${playerScore} </span>
+                </div>
                 
-                <div class="bg-purple-100 p-8 rounded-2xl border-4 border-purple-500 flex flex-col items-center justify-center shadow-inner mb-8">
-                    <div class="text-6xl sm:text-7xl font-extrabold text-purple-800 tracking-widest text-center p-4 min-h-[100px]">
-                        ${wordDisplay}
+                <div class="bg-purple-50 p-8 rounded-2xl border-4 border-purple-300 shadow-inner flex flex-col items-center">
+                    
+                    <div class="mb-8 p-6 bg-white rounded-xl shadow-lg border-4 border-purple-400 w-full max-w-lg text-center">
+                        <p class="text-2xl font-semibold text-gray-700 mb-2">Qual é a sílaba inicial?</p>
+                        <p 
+                            class="text-5xl font-extrabold text-gray-800 cursor-pointer" 
+                            onclick="playWordExample('${puzzle.word}')"
+                            data-text="${puzzle.word}"
+                        >
+                            ${puzzle.word}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">Clique para ouvir a palavra</p>
+                    </div>
+
+                    <div id="syllable-initial-options" class="grid grid-cols-2 gap-4 mb-8 w-full max-w-sm">
+                        ${options.map(option => `
+                            <button
+                                onclick="checkInitialSyllableAnswer('${option}', '${puzzle.correctSyllable}')"
+                                class="py-4 px-6 bg-purple-500 text-white font-black text-2xl rounded-xl shadow-md transform transition duration-200 hover:scale-[1.05] hover:bg-purple-600 initial-syllable-option"
+                                data-text="${option}"
+                            >
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <button
+                        onclick="goToScreen('home')"
+                        class="py-3 px-6 bg-gray-400 text-white font-bold rounded-xl hover:bg-gray-500 transition-all duration-200"
+                    >
+                        Voltar
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Puzzle ${currentInitialSyllableIndex + 1} de ${INITIAL_SYLLABLE_PUZZLES.length}
+                </div>
+            `;
+            playWordExample(puzzle.word); // Toca a palavra automaticamente
+        }
+
+        function checkInitialSyllableAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.initial-syllable-option');
+            buttons.forEach(button => button.disabled = true); // Desabilita botões
+
+            if (selected === correct) {
+                showFeedback(`✅ Correto! A sílaba inicial é "${correct}". +40 pontos!`, 'green', 2000);
+                playSound('success');
+                updateScore(40);
+
+                // Destaca o botão correto
+                buttons.forEach(button => {
+                    if (button.textContent.trim() === correct) {
+                        button.classList.remove('bg-purple-500');
+                        button.classList.add('bg-green-500');
+                    }
+                });
+                
+                setTimeout(() => {
+                    currentInitialSyllableIndex++;
+                    renderInitialSyllableGame();
+                }, 1500);
+
+            } else {
+                showFeedback(`❌ Incorreto! A sílaba inicial não é "${selected}". -20 pontos.`, 'red', 2000);
+                playSound('error');
+                updateScore(-20);
+
+                // Destaca o correto e o incorreto
+                buttons.forEach(button => {
+                    if (button.textContent.trim() === correct) {
+                        button.classList.remove('bg-purple-500');
+                        button.classList.add('bg-green-500');
+                    } else if (button.textContent.trim() === selected) {
+                        button.classList.remove('bg-purple-500');
+                        button.classList.add('bg-red-500');
+                        button.classList.add('shake');
+                        setTimeout(() => button.classList.remove('shake'), 500);
+                    }
+                });
+                
+                setTimeout(() => {
+                    currentInitialSyllableIndex++;
+                    renderInitialSyllableGame();
+                }, 1500);
+            }
+        }
+
+        // --- 7. MÓDULO: QUEBRA-CABEÇA DE PALAVRAS (Letras Drag & Drop) ---
+        function renderWordPuzzleGame() {
+            if (currentWordPuzzleGameIndex >= WORD_PUZZLES_DATA.length) {
+                showFeedback('🎉 Você completou todos os Quebra-Cabeças! +100 pontos!', 'blue', 3000);
+                updateScore(100);
+                goToScreen('home');
+                return;
+            }
+
+            const puzzle = WORD_PUZZLES_DATA[currentWordPuzzleGameIndex];
+            const letters = shuffleArray(puzzle.word.split(''));
+
+            app.innerHTML = `
+                <h2 class="text-3xl font-bold text-pink-600 mb-6 text-center">🧩 Quebra-Cabeça de Palavras</h2>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1"> ⭐ Pontos: ${playerScore} </span>
+                </div>
+                
+                <div class="bg-pink-50 p-8 rounded-2xl border-4 border-pink-300 shadow-inner flex flex-col items-center w-full max-w-lg mx-auto">
+                    
+                    <p class="text-2xl font-semibold text-gray-700 mb-4 text-center">Arraste as letras para formar a palavra:</p>
+                    
+                    <div id="puzzle-slots" class="flex justify-center space-x-3 mb-8 w-full">
+                        ${puzzle.word.split('').map((_, index) => `
+                            <div 
+                                id="slot-${index}"
+                                ondrop="dropLetter(event)"
+                                ondragover="allowDrop(event)"
+                                ondragleave="event.currentTarget.classList.remove('highlight')"
+                                class="puzzle-slot flex-1 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white"
+                                data-index="${index}"
+                            >
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div id="puzzle-letters" class="flex flex-wrap justify-center gap-3 p-4 bg-white rounded-lg shadow-md border-2 border-pink-200 mb-8 w-full">
+                        ${letters.map((letter, index) => `
+                            <div
+                                id="letter-${nextLetterId++}"
+                                class="puzzle-letter py-3 px-4 bg-pink-500 text-white font-black text-2xl rounded-xl shadow-md"
+                                draggable="true"
+                                ondragstart="dragLetter(event)"
+                                data-letter="${letter}"
+                            >
+                                ${letter}
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button
+                            onclick="showPuzzleHint(WORD_PUZZLES_DATA[currentWordPuzzleGameIndex])"
+                            class="puzzle-hint py-3 px-6 bg-yellow-500 text-white font-bold rounded-xl hover:bg-yellow-600 transition-all duration-200 shadow-md"
+                        >
+                            Dica (${puzzle.emoji})
+                        </button>
+                        <button
+                            onclick="checkPuzzleSolution('${puzzle.word}')"
+                            class="py-3 px-6 bg-pink-500 text-white font-bold rounded-xl hover:bg-pink-600 transition-all duration-200 shadow-md"
+                        >
+                            Verificar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Puzzle ${currentWordPuzzleGameIndex + 1} de ${WORD_PUZZLES_DATA.length}
+                </div>
+            `;
+            
+            // Inicializa o estado do puzzle
+            window.puzzleState = {
+                targetWord: puzzle.word,
+                placedLetters: Array(puzzle.word.length).fill(null),
+                remainingLetters: [...letters]
+            };
+        }
+
+        // Funções de Drag & Drop
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('highlight');
+        }
+
+        function dragLetter(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.dataTransfer.setData("letter", ev.target.getAttribute('data-letter'));
+        }
+
+        function dropLetter(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('highlight');
+            
+            const letterId = ev.dataTransfer.getData("text");
+            const letter = ev.dataTransfer.getData("letter");
+            const targetSlot = ev.currentTarget;
+            const targetIndex = parseInt(targetSlot.getAttribute('data-index'));
+
+            // Não permite soltar se o slot já tem uma letra
+            if (targetSlot.children.length > 0) {
+                // Se a letra que está sendo arrastada já estava colocada, apenas move
+                if (document.getElementById(letterId).classList.contains('placed')) {
+                    
+                    // Encontra o slot de onde a letra veio
+                    const previousSlot = document.getElementById(letterId).parentElement;
+                    const previousIndex = parseInt(previousSlot.getAttribute('data-index'));
+
+                    // Remove a letra do slot anterior no estado
+                    window.puzzleState.placedLetters[previousIndex] = null;
+                    
+                    // Move a letra para o novo slot
+                    const tempLetterEl = targetSlot.children[0];
+                    previousSlot.appendChild(tempLetterEl);
+                    window.puzzleState.placedLetters[previousIndex] = tempLetterEl.getAttribute('data-letter');
+                    
+                } else {
+                    showFeedback('Este espaço já está ocupado!', 'yellow', 1000);
+                    return;
+                }
+            }
+
+            const letterEl = document.getElementById(letterId);
+            
+            // Se a letra está voltando da área de opções (não tem 'placed')
+            if (!letterEl.classList.contains('placed')) {
+                // Remove a letra da lista de restantes (visual não precisa, mas o estado sim)
+                const indexInRemaining = window.puzzleState.remainingLetters.indexOf(letter);
+                if (indexInRemaining > -1) {
+                    window.puzzleState.remainingLetters.splice(indexInRemaining, 1);
+                }
+            }
+            
+            targetSlot.appendChild(letterEl);
+            letterEl.classList.add('placed');
+            letterEl.style.position = 'static';
+            letterEl.style.transform = 'none';
+
+            // Atualiza o estado global
+            window.puzzleState.placedLetters[targetIndex] = letter;
+        }
+
+        function dragEnd(ev) {
+            const letterEl = ev.target;
+            // Se a letra foi colocada no slot, ela não deve voltar
+            if (letterEl.classList.contains('placed')) return;
+            
+            // Se soltou no lugar errado, a letra volta visualmente (o estado já está ok)
+            letterEl.style.left = '0';
+            letterEl.style.top = '0';
+        }
+
+        function checkPuzzleSolution(targetWord) {
+            const placedLetters = window.puzzleState.placedLetters;
+            const currentWord = placedLetters.map(l => l || '_').join('');
+            
+            if (currentWord.includes('_')) {
+                showFeedback('Preencha todas as caixas primeiro!', 'yellow', 2000);
+                return;
+            }
+
+            if (currentWord === targetWord) {
+                showFeedback(`✅ Palavra correta! ${targetWord}! +50 pontos.`, 'green', 2000);
+                playSound('success');
+                updateScore(50);
+                playWordExample(targetWord);
+                
+                // Marca todas as letras e slots como corretos
+                placedLetters.forEach((_, index) => {
+                    const slot = document.getElementById(`slot-${index}`);
+                    const letterEl = slot.querySelector('.puzzle-letter');
+                    if (slot) slot.classList.add('correct');
+                    if (letterEl) letterEl.classList.add('correct');
+                });
+                
+                setTimeout(() => {
+                    currentWordPuzzleGameIndex++;
+                    renderWordPuzzleGame();
+                }, 1500);
+
+            } else {
+                showFeedback(`❌ Palavra incorreta! Reveja as letras nas posições. -5 pontos.`, 'red', 2000);
+                playSound('error');
+                
+                updateScore(-5);
+                
+                const slots = document.getElementById('puzzle-slots');
+                slots.classList.add('shake');
+                setTimeout(() => slots.classList.remove('shake'), 500);
+
+                // Feedback visual para letras incorretas
+                window.puzzleState.placedLetters.forEach((letter, index) => {
+                    const slot = document.getElementById(`slot-${index}`);
+                    const correctLetter = targetWord[index];
+                    const letterEl = slot.querySelector('.puzzle-letter');
+
+                    if (letter && letter !== correctLetter) {
+                        slot.classList.remove('correct');
+                        if (letterEl) {
+                            letterEl.classList.remove('correct');
+                            letterEl.classList.add('bg-red-300', 'border-red-500'); // Destaca incorreta
+                            setTimeout(() => {
+                                letterEl.classList.remove('bg-red-300', 'border-red-500');
+                                letterEl.classList.add('bg-pink-500'); // Volta à cor padrão
+                            }, 500);
+                        }
+                    } else if (letter && letter === correctLetter) {
+                        // Mantém correta já colocada
+                        slot.classList.add('correct');
+                        if (letterEl) letterEl.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        function showPuzzleHint(puzzle) {
+            showFeedback(`Dica: ${puzzle.hint}`, 'yellow', 3000);
+        }
+
+      // --- 10. JOGO DA MEMÓRIA EDUCATIVO (Funções Centrais) ---
+        function initializeMemoryGame() {
+            // 1. Cria a lista de cartas duplas (Palavra e Sílaba)
+            let cards = [];
+            MEMORY_GAME_DATA_PAIRS.forEach((pair, index) => {
+                // Carta da Palavra
+                cards.push({
+                    id: `w-${index}`, 
+                    content: pair.word, 
+                    matchValue: pair.syllable,
+                    type: 'word',
+                    emoji: pair.emoji || '',
+                    isFlipped: false,
+                    isMatched: false
+                });
+                // Carta da Sílaba
+                cards.push({
+                    id: `s-${index}`, 
+                    content: pair.syllable, 
+                    matchValue: pair.word,
+                    type: 'syllable',
+                    emoji: '',
+                    isFlipped: false,
+                    isMatched: false
+                });
+            });
+            
+            // 2. Embaralha todas as cartas (CARTAS E PARES EMBARALHADOS)
+            cards = shuffleArray(cards);
+            
+            // 3. Reseta o estado do jogo
+            memoryGameState = {
+                cards: cards,
+                flippedCards: [],
+                lockBoard: false,
+                matchesFound: 0
+            };
+        }
+
+        function renderMemoryGame() {
+            // Se o jogo não foi inicializado ou foi finalizado, inicializa um novo
+            if (memoryGameState.cards.length === 0 || memoryGameState.matchesFound === (memoryGameState.cards.length / 2)) {
+                initializeMemoryGame();
+            }
+            
+            app.innerHTML = `
+                <h2 class="text-3xl font-bold text-teal-600 mb-6 text-center">🧩 Jogo da Memória Educativo</h2>
+                <div class="flex justify-center mb-6">
+                    <span id="score-display" class="text-2xl font-black text-yellow-600 border-b-4 border-yellow-400 pb-1"> ⭐ Pontos: ${playerScore} </span>
+                </div>
+
+                <div class="bg-teal-100 p-8 rounded-2xl border-4 border-teal-500 shadow-inner flex flex-col items-center mb-8">
+                    <p class="text-xl text-gray-700 mb-6 font-semibold text-center">Encontre os pares de PALAVRA e SÍLABA INICIAL correspondentes!</p>
+                    
+                    <div id="memory-board" class="w-full max-w-4xl">
+                        ${memoryGameState.cards.map(card => `
+                            <div class="memory-card ${card.isFlipped ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}" 
+                                data-card-id="${card.id}" 
+                                onclick="flipCard('${card.id}')"
+                                title="${card.type === 'word' ? 'Palavra' : 'Sílaba'}"
+                            >
+                                <div class="card-inner">
+                                    <div class="card-face card-front flex-col text-center">
+                                        ${card.emoji && card.type === 'word' ? `<span class="text-xl">${card.emoji}</span>` : ''}
+                                        <span class="text-3xl font-black" data-text="${card.content}">${card.content}</span>
+                                    </div>
+                                    <div class="card-face card-back">
+                                        🧠
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
 
-                <div id="syllable-options" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    ${shuffleArray([...puzzle.options]).map(syllable => `
-                        <button 
-                            onclick="checkInitialSyllable('${syllable}', '${puzzle.correctSyllable}', this)" 
-                            class="py-4 text-3xl font-black bg-purple-400 text-white rounded-xl transform transition duration-150 hover:scale-105 shadow-lg border-b-4 border-purple-600 active:border-b-0 active:translate-y-1"
-                        >
-                            ${syllable}
-                        </button>
-                    `).join('')}
+                <div class="flex justify-between items-center mt-8 flex-wrap gap-4">
+                    <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md">
+                        🏠 Menu
+                    </button>
+                    <button onclick="renderMemoryGame()" class="py-3 px-6 bg-teal-500 text-white font-bold rounded-xl hover:bg-teal-600 transition-all duration-200 shadow-md">
+                        🔄 Novo Jogo
+                    </button>
                 </div>
-                
-                <button onclick="goToScreen('home')" class="py-3 px-6 bg-gray-500 text-white font-bold rounded-xl hover:bg-gray-600 transition-all duration-200 shadow-md w-full">
-                    🏠 Voltar ao Menu
-                </button>
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Pares encontrados: <span class="font-bold text-teal-600">${memoryGameState.matchesFound}</span> de ${memoryGameState.cards.length / 2}
+                </div>
             `;
         }
-        
-        function checkInitialSyllable(selected, correct, button) {
-            const optionsContainer = document.getElementById('syllable-options');
-            Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
-            
-            if (selected === correct) {
-                button.classList.add('bg-green-500', 'border-green-700', 'ring-4', 'ring-green-300');
-                showFeedback("🎉 Acertou! Mais 10 pontos!", 'green');
-                playSound('success');
-                updateScore(10); // Adiciona pontos!
 
-                setTimeout(() => {
-                    currentInitialSyllableIndex++;
-                    renderInitialSyllableGame();
-                }, 2000);
-            } else {
-                button.classList.add('bg-red-500', 'border-red-700', 'ring-4', 'ring-red-300');
-                Array.from(optionsContainer.children).find(btn => btn.textContent.trim() === correct)
-                    .classList.add('bg-green-300', 'ring-4', 'ring-green-300');
-                    
-                showFeedback(`❌ Que pena! A sílaba correta é ${correct}.`, 'red');
-                playSound('error');
+        function flipCard(id) {
+            let state = memoryGameState;
+            let card = state.cards.find(c => c.id === id);
+            
+            if (state.lockBoard || card.isFlipped || card.isMatched || state.flippedCards.length >= 2) return;
+
+            card.isFlipped = true;
+            state.flippedCards.push(card);
+            
+            const cardElement = document.querySelector(`[data-card-id="${id}"]`);
+            if (cardElement) {
+                cardElement.classList.add('flipped');
+                // Tenta falar o conteúdo
+                playWordExample(card.content); 
+            }
+
+            if (state.flippedCards.length === 2) {
+                state.lockBoard = true;
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            let state = memoryGameState;
+            const [card1, card2] = state.flippedCards;
+
+            // Match se o valor de uma carta for o matchValue da outra, e vice-versa
+            const isMatch = (card1.matchValue === card2.content) && (card2.matchValue === card1.content);
+
+            if (isMatch) {
+                // Match encontrado
+                state.matchesFound++;
+                card1.isMatched = true;
+                card2.isMatched = true;
                 
-                setTimeout(() => {
-                    currentInitialSyllableIndex++;
-                    renderInitialSyllableGame();
-                }, 3000);
-            }
-        }
+                const el1 = document.querySelector(`[data-card-id="${card1.id}"]`);
+                const el2 = document.querySelector(`[data-card-id="${card2.id}"]`);
+                if (el1) el1.classList.add('matched');
+                if (el2) el2.classList.add('matched');
+                
+                updateScore(50);
+                showFeedback(`🎉 Match! Palavra e Sílaba Inicial! +50 pontos!`, 'green', 1500);
+                
+                resetBoard();
+                
+                if (state.matchesFound === state.cards.length / 2) {
+                    showFeedback(`🏆 Parabéns, ${playerName}! Você encontrou todos os pares! +100 pontos de bônus!`, 'yellow', 3000);
+                    updateScore(100);
+                    setTimeout(() => renderMemoryGame(), 3000); 
+                }
 
-        // --- FEEDBACK E INICIALIZAÇÃO ---
-        function showFeedback(message, color, duration = 2500) {
-            let feedbackElement = document.getElementById('feedback-message');
-            if (!feedbackElement) {
-                feedbackElement = document.createElement('div');
-                feedbackElement.id = 'feedback-message';
-                feedbackElement.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-xl shadow-2xl z-50 text-white font-bold text-xl transition-opacity duration-300 opacity-0';
-                document.body.appendChild(feedbackElement);
-            }
-
-            feedbackElement.textContent = message;
-            feedbackElement.className = `fixed top-4 left-1/2 transform -translate-x-1/2 p-4 rounded-xl shadow-2xl z-50 text-white font-bold text-xl transition-opacity duration-300 opacity-100`;
-            
-            if (color === 'green') {
-                feedbackElement.classList.add('bg-green-600');
-            } else if (color === 'red') {
-                feedbackElement.classList.add('bg-red-600');
-            } else if (color === 'blue') {
-                 feedbackElement.classList.add('bg-blue-600');
-            } else if (color === 'orange') {
-                 feedbackElement.classList.add('bg-orange-600');
-            }
-            
-            ['bg-green-600', 'bg-red-600', 'bg-blue-600', 'bg-orange-600'].forEach(c => {
-                if (c !== `bg-${color}-600`) feedbackElement.classList.remove(c);
-            });
-
-            clearTimeout(feedbackElement.timeout);
-            feedbackElement.timeout = setTimeout(() => {
-                feedbackElement.classList.remove('opacity-100');
-                feedbackElement.classList.add('opacity-0');
-            }, duration);
-        }
-
-        // Inicializa a tela ao carregar o documento
-        window.onload = function() {
-            // Embaralha os dados do jogo (exceto o alfabeto)
-            shuffleArray(COUNTING_PUZZLES);
-            shuffleArray(WORD_PUZZLES);
-            shuffleArray(INITIAL_SYLLABLE_PUZZLES);
-            
-            if (!playerName) {
-                goToScreen('welcome');
             } else {
-                goToScreen('home');
+                // Não é um Match
+                updateScore(-10);
+                showFeedback(`❌ Não é um par. Tente novamente! -10 pontos.`, 'red', 1000);
+
+                setTimeout(() => {
+                    card1.isFlipped = false;
+                    card2.isFlipped = false;
+                    
+                    const el1 = document.querySelector(`[data-card-id="${card1.id}"]`);
+                    const el2 = document.querySelector(`[data-card-id="${card2.id}"]`);
+                    if (el1) el1.classList.remove('flipped');
+                    if (el2) el2.classList.remove('flipped');
+                    
+                    resetBoard();
+                }, 1200);
             }
-        };
+        }
+
+        function resetBoard() {
+            memoryGameState.flippedCards = [];
+            memoryGameState.lockBoard = false;
+            
+            const scoreDisplay = document.getElementById('score-display');
+            if (scoreDisplay) {
+                scoreDisplay.textContent = `⭐ Pontos: ${playerScore}`;
+            }
+            const matchCounter = document.querySelector('.font-bold.text-teal-600');
+            if (matchCounter) {
+                matchCounter.textContent = memoryGameState.matchesFound;
+            }
+        }
+
+
+        // --- 9. RANKING ---
+        function renderRanking() {
+            const ranking = getRanking();
+            
+            app.innerHTML = `
+                <h2 class="text-3xl font-bold text-yellow-600 mb-8 text-center">🏆 Ranking dos Melhores</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <span id="score-display" class="text-xl font-black text-yellow-600"> ⭐ Seus Pontos: ${playerScore} </span>
+                    <button
+                        onclick="goToScreen('home')"
+                        class="py-2 px-4 bg-gray-400 text-white font-bold rounded-xl hover:bg-gray-500 transition-all duration-200"
+                    >
+                        Voltar
+                    </button>
+                </div>
+                
+                <div class="bg-yellow-50 p-6 rounded-2xl border-4 border-yellow-300 shadow-inner w-full max-w-xl mx-auto">
+                    ${ranking.length > 0 ? `
+                        <ol class="space-y-3">
+                            ${ranking.map((item, index) => `
+                                <li class="ranking-item p-4 bg-white rounded-xl shadow-md border-l-8 ${index === 0 ? 'border-amber-500' : index === 1 ? 'border-gray-400' : index === 2 ? 'border-amber-700' : 'border-yellow-200'} flex justify-between items-center">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl font-black ${index === 0 ? 'text-amber-500' : index === 1 ? 'text-gray-500' : index === 2 ? 'text-amber-700' : 'text-gray-700'}">${index + 1}.</span>
+                                        <span class="text-lg font-semibold text-gray-800">${item.name} ${item.name === playerName ? '(VOCÊ)' : ''}</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xl font-extrabold text-blue-600">${item.score} pts</span>
+                                        <p class="text-xs text-gray-500">em ${item.date}</p>
+                                    </div>
+                                </li>
+                            `).join('')}
+                        </ol>
+                    ` : `
+                        <p class="text-center text-lg text-gray-500 py-4">Nenhum jogador no ranking ainda. Seja o primeiro!</p>
+                    `}
+                </div>
+            `;
+        }
+
+        // --- 10. MUDAR NOME/RESETAR ---
+        function renderChangeName() {
+            app.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-600 mb-8 text-center">🔄 Mudar Nome & Recomeçar</h2>
+                <div class="max-w-sm mx-auto p-6 bg-gray-50 rounded-xl shadow-lg border-2 border-gray-200 text-center">
+                    <p class="text-lg text-gray-700 mb-4">Seu nome atual: <span class="font-extrabold">${playerName}</span></p>
+                    <p class="text-lg text-gray-700 mb-6">Sua pontuação atual: <span class="font-extrabold text-yellow-600">${playerScore}</span></p>
+                    
+                    <p class="text-md text-red-600 font-semibold mb-6">
+                        Ao mudar seu nome, sua pontuação atual será salva no Ranking (se for uma das 10 melhores) e você recomeçará com 0 pontos.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-blue-500 mb-3">Novo Nome:</h3>
+                    <input
+                        type="text"
+                        id="new-name-input"
+                        placeholder="Digite o novo nome aqui"
+                        maxlength="15"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg text-center mb-6 focus:border-blue-500 transition-all duration-200"
+                    />
+
+                    <button
+                        onclick="handleChangeNameConfirm()"
+                        class="w-full py-3 px-6 bg-blue-500 text-white font-bold text-xl rounded-xl shadow-md hover:bg-blue-600 transition-all duration-200 mb-4"
+                    >
+                        Confirmar Mudança
+                    </button>
+                    
+                    <button
+                        onclick="goToScreen('home')"
+                        class="w-full py-3 px-6 bg-gray-400 text-white font-bold text-xl rounded-xl shadow-md hover:bg-gray-500 transition-all duration-200"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            `;
+        }
+
+        function handleChangeNameConfirm() {
+            const input = document.getElementById('new-name-input');
+            const newName = input.value.trim();
+            if (newName.length > 1) {
+                resetPlayerData(); // Salva o placar antigo e reseta o jogo
+                updatePlayerName(newName); // Define o novo nome e zera o score
+                showFeedback(`Nome alterado para ${newName}! Pontos resetados.`, 'green', 3000);
+            } else {
+                showFeedback('Por favor, digite um nome válido.', 'red', 2000);
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 500);
+            }
+        }
+        
+        // --- INICIALIZAÇÃO ---
+        function init() {
+            // Adiciona listener para dragend (necessário para soltar fora de um slot)
+            document.addEventListener('dragend', dragEnd);
+            
+            if (playerName) {
+                goToScreen('home');
+            } else {
+                goToScreen('welcome');
+            }
+        }
+        
+        window.onload = init;
 
     </script>
 </body>
-
 </html>
